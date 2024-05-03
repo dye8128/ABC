@@ -46,54 +46,25 @@ int main() {
         vll a, b;
         each(v, g){
             ll vx = v[0], vy = v[1];
-            // if((vx-vy)%2==-1){
-            //     vy--;
-            // }
-            a.emplace_back((vx+vy)/2);
-            b.emplace_back((vx-vy)/2);
+            a.emplace_back(vx+vy);
+            b.emplace_back(vx-vy);
         }
         ll m = a.size();
-        map<ll, ll> asum, anum, bsum, bnum;
-        rep(i, m){
-            // a[i] += 1e8; b[i] += 1e8;
-            asum[a[i]+1e8]+=a[i];
-            anum[a[i]+1e8]++;
-            bsum[b[i]+1e8]+=b[i];
-            bnum[b[i]+1e8]++;
-        }
-        ll tmp = 0;
-        each(v,asum){
-            tmp += v.second;
-            asum[v.first] = tmp;
-        }
-        tmp = 0;
-        each(v,bsum){
-            tmp += v.second;
-            bsum[v.first] = tmp;
-        }
-        tmp = 0;
-        each(v,anum){
-            tmp += v.second;
-            anum[v.first] = tmp;
-        }
-        tmp = 0;
-        each(v,bnum){
-            tmp += v.second;
-            bnum[v.first] = tmp;
+        if(m == 0) break;
+
+        sort(all(a)); sort(all(b));
+        
+        vll sum_a(m,0), sum_b(m,0);
+        sum_a[0] = a[0]; sum_b[0] = b[0];
+        rep(i,1,m){
+            sum_a[i] = sum_a[i - 1] + a[i];
+            sum_b[i] = sum_b[i - 1] + b[i];
         }
 
-        // each(v,asum) cout << v.first - 1e8 << " " << v.second << endl; cout << endl;
-        // each(v,anum) cout << v.first - 1e8 << " " << v.second << endl; cout << endl;
-        // each(v,bsum) cout << v.first - 1e8 << " " << v.second << endl; cout << endl;
-        // each(v,bnum) cout << v.first - 1e8 << " " << v.second << endl; cout << endl;
-        
-        rep(i,m){
-            ans += anum[a[i]+1e8] * a[i] - asum[a[i]+1e8];
-            ans += asum.rbegin()->second - asum[a[i]+1e8] - a[i] * (anum.rbegin()->second - anum[a[i]+1e8]);
-            ans += bnum[b[i]+1e8] * b[i] - bsum[b[i]+1e8];
-            ans += bsum.rbegin()->second - bsum[b[i]+1e8] - b[i] * (bnum.rbegin()->second - bnum[b[i]+1e8]);
-            // cout << ans << endl;
+        rep(i,1,m){
+            ans += (i * a[i] - sum_a[i - 1]) / 2;
+            ans += (i * b[i] - sum_b[i - 1]) / 2;
         }
     }
-    cout << ans/2 << endl;
+    cout << ans << endl;
 }
