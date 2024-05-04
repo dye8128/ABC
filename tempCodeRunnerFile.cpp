@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
+using namespace atcoder;
 using ll = long long;
 using str = string;
 using pint = pair<int, int>;
@@ -30,32 +32,30 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-vll a;
-vll r;
-
-bool judge(ll n, ll m){
-    r.assign(n,0);
-    r[0] = m;
-    rep(i,n-1){
-        r[i+1] = 2 * a[i] - r[i];
-    }
-    ll r0 = 2 * a[n-1] - r[n-1];
-    return r0 <= r[0];
-}
-
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll v; cin >> v;
-        a.emplace_back(v);
+    ll n; ll m; cin >> n >> m;
+    vc<tuple<ll, ll, ll>> edges;
+    
+    rep(i,m){
+        ll k, c; cin >> k >> c;
+        vll a(k);
+        rep(j,k){
+            cin >> a[j];
+            a[j]--;
+        }
+        rep(j,1,k){
+            edges.emplace_back(c,a[0],a[j]);
+        }
     }
-
-    // 二分探索
-    ll ng = -1, ok = 1e10;
-    while(abs(ok - ng)>1){
-        ll m = (ok + ng) / 2;
-        judge(n, m) ? ok = m : ng = m;
+    sort(all(edges));
+    dsu uf(n);
+    ll ans = 0;
+    each(edge,edges){
+        auto[c,u,v] = edge;
+        if(!uf.same(u,v)){
+            uf.merge(u,v);
+            ans += c;
+        }
     }
-
-    rep(i,n) cout << r[i] << " "; cout << endl;
+    cout << (uf.groups().size() == 1 ? ans : -1) << endl;
 }

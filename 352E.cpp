@@ -32,21 +32,9 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-vll seen;
-void dfs(vc<map<ll,ll>> &g, ll v){
-    seen[v] = 1;
-    each(next,g[v]){
-        if(!seen[next.first]){
-            dfs(g,next.first);
-        }
-    }
-}
-
 int main() {
-    ll inf = 1e10;
     ll n; ll m; cin >> n >> m;
-    vc<map<ll,ll>> g(n);
-    vc<tuple<ll,ll,ll>> edges;
+    vc<tuple<ll, ll, ll>> edges;
     
     rep(i,m){
         ll k, c; cin >> k >> c;
@@ -55,45 +43,19 @@ int main() {
             cin >> a[j];
             a[j]--;
         }
-        rep(j,k){
-            rep(l,j+1,k){
-                g[a[j]].insert({a[l],inf});
-                g[a[l]].insert({a[j],inf});
-                g[a[j]][a[l]] = min(g[a[j]][a[l]], c);
-                g[a[l]][a[j]] = min(g[a[l]][a[j]], c);
-            }
-        }
-    }
-    // rep(i,n){
-    //     each(v,g[i]) cout << v.first << " "; cout << endl;
-    // }
-    rep(i,m){
-        each(v,g[i]){
-            if(i < v.first){
-                edges.emplace_back(tuple<ll,ll,ll>(v.second,i,v.first));
-            }
+        rep(j,1,k){
+            edges.emplace_back(c,a[0],a[j]);
         }
     }
     sort(all(edges));
-
-    seen.assign(n,false);
-    dfs(g,0);
-    rep(i,n){
-        if(!seen[i]){
-            cout << -1 << endl;
-            return 0;
-        }
-    }
-    
     dsu uf(n);
     ll ans = 0;
-
-    each(e,edges){
-        auto [c, i, j] = e;
-        if(!uf.same(i,j)){
-            uf.merge(i,j);
+    each(edge,edges){
+        auto[c,u,v] = edge;
+        if(!uf.same(u,v)){
+            uf.merge(u,v);
             ans += c;
         }
     }
-    cout << ans << endl;
+    cout << (uf.groups().size() == 1 ? ans : -1) << endl;
 }
