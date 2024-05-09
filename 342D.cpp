@@ -31,5 +31,28 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    
+    ll n; cin >> n;
+    vll a(n);
+    rep(i,n) cin >> a[i];
+    map<ll,ll> mp;
+    rep(i,n){
+        ll d = 1, d_max = 1;
+        while(d * d <= a[i]){
+            if(a[i] % (d * d) == 0){
+                d_max = d;
+            }
+            d++;
+        }
+        a[i]/=(d_max * d_max);
+        mp[a[i]]++;
+    }
+    ll ans = 0;
+    each(v, mp){
+        if(v.first == 0){
+            ans += v.second * (n - v.second);
+        }
+        // cout << v.first << " " << v.second << endl;
+        ans += v.second * (v.second - 1) / 2;
+    }
+    cout << ans << endl;
 }
