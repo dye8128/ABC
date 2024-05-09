@@ -32,8 +32,26 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    str s; cin >> s;
+    vll alph(26);
+    rep(i, 26){
+        alph[i] = i;
     }
+    ll q; cin >> q;
+    rep(i, q){
+        char c, d; cin >> c >> d;
+        ll cl = c - 'a';
+        ll dl = d - 'a';
+        rep(j ,26){
+            if(alph[j] == cl){
+                alph[j] = dl;
+            }
+        }
+    }
+    rep(i, n){
+        ll sl = s[i] - 'a';
+        char sc = alph[sl] + 'a';
+        cout << sc;
+    }
+    cout << endl;
 }

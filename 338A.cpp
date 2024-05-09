@@ -31,9 +31,15 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    str s; cin >> s;
+    bool flag = true;
+    if(s[0] < 'A' || s[0] > 'Z'){
+        flag = false;
     }
+    rep(i, 1, s.size()){
+        if(s[i] < 'a' || s[i] > 'z'){
+            flag = false;
+        }
+    }
+    yesno(flag);
 }

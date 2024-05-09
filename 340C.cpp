@@ -30,10 +30,28 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+map<ll, ll> a;
+ll calc(ll n){
+    ll i = n/2, j = (n + 1)/2;
+    ll ai, aj;
+    // each(v, a) cout << v.first << v.second << " "; cout << endl;
+    if(a.count(i) == 0){
+        ai = calc(i);
+    }else{
+        ai = a.at(i);
+    }
+    if(a.count(j) == 0){
+        aj = calc(j);
+    }else{
+        aj = a.at(j);
+    }
+    a.insert({n, ai + aj + n});
+    return ai + aj + n;
+}
+
 int main() {
     ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
-    }
+    a.insert({2, 2});
+    a.insert({1, 0});
+    cout << calc(n) << endl;
 }

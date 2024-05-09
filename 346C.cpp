@@ -31,9 +31,19 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
+    ll n; ll k; cin >> n >> k;
+    vll a(n);
+    ll sum = k * (k + 1) /2;
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        cin >> a[i];
     }
+    set<ll> s;
+    rep(i,n){
+        s.insert(a[i]);
+    }
+    each(v,s){
+        if(v <= k) sum-=v;
+        // cout << v << endl;
+    }
+    cout << sum << endl;
 }

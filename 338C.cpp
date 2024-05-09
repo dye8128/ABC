@@ -29,11 +29,44 @@ using vvll = vvc<ll>;
 #define all(x) (x).begin(), (x).end()
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
+ll n;
+
+ll binary(vll &q, vll &a, vll &b){
+    ll ok = 0, ng = 1e7;
+    ll m;
+    while(abs(ok - ng) > 1){
+        m = (ok+ng)/2;
+        ll low = 0, high = 1e7;
+        rep(i,n){
+            if(a[i] - b[i] > 0){
+                if(q[i] - m * b[i] >= 0){
+                    high = min(high, (q[i] - m * b[i]) / (a[i] - b[i]));
+                }else{
+                    high = -1;
+                }
+            }else if(a[i] - b[i] < 0){
+                low = max(low, (m * b[i] - q[i] + b[i] - a[i] - 1) / (b[i] - a[i]));
+            }else if(q[i] - m*b[i] < 0){
+                low = 1e7;
+            }
+        }
+        // cout << high << " " << low << endl;
+        if(high - low >= 0 && high >= 0 && low <= m){
+            ok = m;
+        }else{
+            ng = m;
+        }
+        // cout << "ok:" << ok << " ng:" << ng << endl;
+    }
+    return ok;
+}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
-    }
+    cin >> n;
+    vll q(n), a(n), b(n);
+    rep(i,n) cin >> q[i];
+    rep(i,n) cin >> a[i];
+    rep(i,n) cin >> b[i];
+    ll ans = binary(q,a,b);
+    cout << ans << endl;
 }

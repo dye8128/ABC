@@ -30,10 +30,31 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+vstr s;
+
+bool in(ll x, ll y, ll n){
+    return x >= 0 && y >=0 && x < n && y < n;
+}
+
+bool can_move(ll x, ll y){
+    return s[x][y] == '.';
+}
+
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    ll n; cin >> n; 
+    rep(i, n){
+        str s_;
+        cin >> s_;
+        s.emplace_back(s_);
+    }
+    vvll player; ll k = 0;
+    vll dx = {1, 0, -1, 0}, dy = {0, 1, 0, -1};
+    rep(i, n){
+        rep(j, n){
+            if(s[i][j] == 'P'){
+                player[k] = {i, j};
+                k++ ;
+            }
+        }
     }
 }

@@ -32,8 +32,18 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    vll x(n), y(n);
+    ll a = 0, b = 0;
+    rep(i, n){
+        cin >> x[i] >> y[i];
+        a+=x[i];b+=y[i];
     }
+    if(a > b){
+        cout << "Takahashi" << endl;
+    }else if(a == b){
+        cout << "Draw" << endl;
+    }else{
+        cout << "Aoki" << endl;
+    }
+
 }

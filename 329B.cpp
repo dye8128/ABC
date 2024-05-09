@@ -31,9 +31,17 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    int n; cin >> n;
+    vint a(n);
+    rep(i,n) cin >> a[i];
+    int first = 0, second = 0;
+    each(v, a){
+        if(first < v){
+            second = first;
+            first = v;
+        }else if(second < v && first > v){
+            second = v;
+        }
     }
+    cout << second <<  endl;
 }

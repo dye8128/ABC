@@ -32,8 +32,46 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    vll a(n);
+    rep(i, n) cin >> a[i];
+    vll sort_a = a;
+    sort(all(sort_a));
+    reverse(all(sort_a));
+    vll ind(n);
+    iota(all(ind),0);
+
+    sort(all(ind), [&a](size_t i1, size_t i2){
+        return a[i1] > a[i2];
+    });
+
+    vll sum(n+1);
+    ll tmp = 0, num = 0;
+    rep(i, n+1){
+        if(i == 0){
+            sum[i] = 0;
+            num = sort_a[i];
+            tmp ++;
+        }else{
+            if(sort_a[i] < num){
+                sum[i] = tmp * num + sum[i - 1];
+                tmp = 1;
+                num = sort_a[i];
+            }else{
+                tmp += 1;
+                sum[i] = sum[i - 1];
+            }
+        }
     }
+    // each(v, sort_a) cout << v << " "; cout << endl;
+    // each(v, sum) cout << v << " "; cout << endl;
+    // rep(i,n){
+    //     cout << ind[i] << " ";
+    //     cout << sum[ind[i] + 1] << " ";
+    // }
+    // cout << "A" << endl;
+    vll ans(n);
+    rep(i, n){
+        ans[ind[i]] = sum[i];
+    }
+    rep(i, n) cout << ans[i] <<" ";
 }

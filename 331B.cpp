@@ -31,9 +31,16 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    int n, s, m, l; cin >> n >> s >> m >> l;
+    int ans = 1e5;
+    rep(i,20){
+        rep(j,20){
+            rep(k,20){
+                if(i*6+j*8+k*12>=n){
+                    ans = min(ans, int(s*i + m*j + k*l));
+                }
+            }
+        }
     }
+    cout << ans << endl;
 }

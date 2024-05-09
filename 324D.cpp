@@ -26,14 +26,42 @@ using vvll = vvc<ll>;
 #define each3(x,y,a)   for(auto&& [x, y] : a)
 #define each4(x,y,z,a) for(auto&& [x, y, z] : a)
 #define each(...) overload4(__VA_ARGS__, each4, each3, each2, each1)(__VA_ARGS__)
-#define all(x) (x).begin(), (x).end()
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+multiset<ll> s;
+void calc(ll &x, multiset<ll> &sq){
+    sq.insert(x%10);
+    x /= 10;
+    if(x > 0) calc(x,sq);
+    else{
+        while(sq.size() < s.size()){
+            sq.insert(0l);
+        }
     }
+}
+
+int main() {
+    int n; cin >> n;
+    str s_str; cin >> s_str;
+    ll zero = 0;
+    rep(i,n) {
+        ll tmp = s_str[i] - '0';
+        s.insert(tmp);
+        if(tmp == 0) zero ++;
+    }
+    ll min = 0;//sqrt(pow(10,n-1-zero));
+    ll max = sqrt(pow(10,n));
+    ll ans = 0;
+    rep(i,min,max+1){
+        ll tmp = i * i;
+        multiset<ll> sq;
+        calc(tmp,sq);
+        // each(a,sq) cout << a;cout << endl;
+        if(sq == s){
+            ans ++;
+            // cout << i << endl;
+        }
+    }
+    cout << ans << endl;
 }

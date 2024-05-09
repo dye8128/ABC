@@ -32,8 +32,26 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
+    vll a(n);
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        cin >> a[i];
+        a[i]--;
+    }
+    ll i = 0;
+    vvll ans;
+    while(i < n){
+        ll tmp = a[i];
+        if(a[i] != i){
+            swap(a[i],a[tmp]);
+            vll b = {i, tmp};
+            ans.emplace_back(b);
+        }else{
+            i++;
+        }
+    }
+    i = 0;
+    cout << ans.size() << endl;
+    each(v,ans){
+        cout << ++v[0] << " " << ++v[1] << endl;
     }
 }

@@ -31,9 +31,12 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
+    ll n, s, k; cin >> n >> s >> k;
+    vll p(n), q(n);
+    rep(i,n){cin >> p[i] >> q[i];}
+    ll sum = 0;
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        sum += p[i]* q[i];
     }
+    cout << sum + (sum >= s ? 0 : k) << endl;
 }

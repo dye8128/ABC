@@ -30,10 +30,30 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+map<ll, double> mp;
+
+double f(ll n, ll a, ll x, ll y){
+    
+    if(n == 0) return (double)0;
+    if(mp.find(n) == end(mp)){
+        double re = 0;
+        double tmp = 6 * y;
+        rep(i,2,7){
+            tmp += f(n / i, a, x, y);
+        }
+        tmp /= 5;
+        re = min(x + f(n / a, a, x, y), tmp);
+        mp[n] = re;
     }
+    return mp[n];
+}
+
+int main() {
+    ll n, a, x, y;
+    cin >> n >> a >> x >> y;
+
+    cout << fixed << setprecision(8) << f(n, a, x, y) << endl;
+    // each(v,mp){
+    //     cout << v.first << " " << v.second << endl;
+    // }
 }

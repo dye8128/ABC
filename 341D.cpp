@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
+using ll = unsigned long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,10 +30,38 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+ll n, m, k, l;
+ll gcd(ll n, ll m){
+    if(n > m)swap(n,m);
+    if(m%n==0)return n;
+    return gcd(m%n, n);
+}
+
+bool calc(ll a, ll nm){
+    ll tmp = a * nm ;
+    // cout << tmp << ":" << tmp/n + tmp/m - 2 * (tmp/(n * m)) << endl;
+    return tmp/n + tmp/m - 2 * (tmp/l) >= k;
+}
+
+bool calc2(ll a){
+    return a/n+a/m-2*(a/l)==k;
+}
+
+ll binary(ll nm){
+    ll ok = max(n, m) * k, ng = 0;
+    while(ok - ng > 1){
+        ll mid = (ok + ng)/2;
+        if(calc(mid, 1)){
+            ok = mid;
+        }else{
+            ng = mid;
+        }
     }
+    return ok;
+}
+
+int main() {
+    cin >> n >> m >> k;
+    l = n * m / gcd(n,m);
+    cout << binary(n) << endl;
 }

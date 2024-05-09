@@ -30,10 +30,51 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+void cal(vll &check,ll& c, ll &v, vvll& f, ll i){
+    if(f[i].size() == 0){
+        check[i] = 1;
+        c++;
+        v++;
+        return;
     }
+    each(vv, f[i]){
+        if(check[vv] == 0){
+            c++;
+            v++;
+            check[vv] = 1;
+            // cout << c << v << endl;
+            cal(check, c, v, f, vv);
+        }
+    }
+}
+
+int main() {
+    ll n, m;
+    cin >> n >> m;
+    vll a(m), b(m);
+    rep(i,m){
+        cin >> a[i] >> b[i];
+        a[i]--;b[i]--;
+    }
+    vvll f(n,vll());
+    rep(i,m){
+        f[a[i]].emplace_back(b[i]);
+        f[b[i]].emplace_back(a[i]);
+    }
+    vll check(n,0);
+    ll c = 0;
+    vll g;// 各グラフの頂点数
+    while(c < n){
+        ll v = 0;
+        ll i = 0;
+        while(check[i]) i++;
+        cal(check, c, v, f, i);
+        g.emplace_back(v);
+    }
+    ll ans = 0;
+    each(v, g){
+        ans += v * (v - 1) / 2;
+    }
+    ans -= m;
+    cout << ans << endl;
 }

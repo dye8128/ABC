@@ -31,9 +31,31 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    ll n, m, l; cin >> n >> m >> l;
+    vll a(n), b(m);
+    rep(i,n) cin >> a[i];
+    rep(i,m) cin >> b[i];
+    set<pll> bad;
+    rep(i,l){
+        ll c, d; cin >> c >> d;
+        c--;d--;
+        bad.insert({c,d});
     }
+
+    vpll sort_b;
+    rep(i,m) sort_b.emplace_back(make_pair(b[i],i));
+    sort(all(sort_b));
+
+    ll ans = 0;
+    rep(i,n){
+        rep(_,m){
+            ll j = m - 1 - _;
+            if(bad.count({i,sort_b[j].second}) == 0){
+                ans = max(ans, a[i] + sort_b[j].first);
+                break;
+            }
+        }
+    }
+
+    cout << ans << endl;
 }

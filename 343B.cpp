@@ -33,7 +33,10 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 int main() {
     ll n; cin >> n;
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        rep(j,n){
+            ll a; cin >> a;
+            if(a == 1) cout << j + 1 << " ";
+        }
+        cout << endl;
     }
 }

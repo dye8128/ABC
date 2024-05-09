@@ -31,9 +31,23 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
+    ll n, a, b; cin >> n >> a >> b;
+    vll d(n);
+    rep(i,n) cin >> d[i];
+    set<ll> ds;
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        ds.insert(d[i]%(a+b));
     }
+    vll dv;
+    each(v,ds){
+        dv.emplace_back(v);
+        // cout << v << " ";
+    }
+
+    ll ans = 1e10;
+    rep(i,dv.size()-1){
+        ans = min(ans, a + b + dv[i] - dv[i+1]);
+    }
+    ans = min(ans, dv.back()-dv[0]);
+    cout << (ans < a ? "Yes":"No") << endl;
 }

@@ -31,9 +31,19 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    ll k, g, m; cin >> k >> g >> m;
+    ll glass = 0, mag = 0;
+    rep(i,k){
+        if(glass == g){
+            glass = 0;
+        }else if(mag == 0){
+            mag = m;
+        }else{
+            while(mag > 0 && glass < g){
+                mag--;
+                glass++;
+            }
+        }
     }
+    cout << glass << " " << mag << endl;
 }

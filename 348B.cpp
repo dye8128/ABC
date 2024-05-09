@@ -32,8 +32,21 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
+    vll x(n), y(n);
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        cin >> x[i] >> y[i];
+    }
+    rep(i,n){
+        ll len = 0, ind = 0;
+        rep(j,n){
+            if(i == j){
+                continue;
+            }
+            if((x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j])>len){
+                len = (x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j]);
+                ind = j;
+            }
+        }
+        cout << ind + 1 << endl;
     }
 }

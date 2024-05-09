@@ -32,8 +32,20 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    ll i = 1;
+    ll ans = 1;
+    while(i * i * i <= n){
+        str a = to_string(i * i * i);
+        ll w = a.size();
+        rep(j, w/2 + 1){
+            if(j == w/2){
+                ans = i * i * i;
+            }
+            if(a[j] != a[w-j-1]){
+                break;
+            }
+        }
+        i++;
     }
+    cout << ans << endl;
 }

@@ -30,10 +30,56 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+str t;
+void move(ll i, ll& x, ll& y){
+    switch (t[i])
+    {
+    case 'L':
+        y += 1;
+        break;
+    case 'R':
+        y -= 1;
+        break;
+    case 'U':
+        x += 1;
+        break;
+    case 'D':
+        x -= 1;
+        break;
     }
+}
+bool in(ll i, ll n){
+    return i >= 0 && i < n;
+}
+
+int main() {
+    ll h, w, n; cin >> h >> w >> n;
+    cin >> t;
+    vstr s(h);
+    rep(i,h){
+        cin >> s[i];
+    }
+    // cout << "A " <<endl;
+    ll x = 0, y = 0;
+    ll ans = 0;
+    rep(i, h){
+        rep(j, w){
+            x = i; y = j;
+            bool f = true;
+            if(s[x][y] == '#') f = false;
+            // cout << i << j << endl;
+            rep(k, n){
+                move(n - 1 - k, x, y);
+                // cout << x << y << endl;
+                if(in(x, h) && in(y, w) && s[x][y] == '.'){
+                }else{
+                    f = false;
+                    break;
+                }
+                // cout << i << j << endl;
+            }
+            ans += f;
+        }
+    }
+    cout << ans << endl;
 }

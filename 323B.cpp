@@ -26,14 +26,29 @@ using vvll = vvc<ll>;
 #define each3(x,y,a)   for(auto&& [x, y] : a)
 #define each4(x,y,z,a) for(auto&& [x, y, z] : a)
 #define each(...) overload4(__VA_ARGS__, each4, each3, each2, each1)(__VA_ARGS__)
-#define all(x) (x).begin(), (x).end()
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
+    int n; cin >> n;
+    vstr s(n);
+    for(int i = 0; i < n; i++){
+        cin >> s.at(i);
+    }
+    vint wins(n,0);
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        rep(j,n){
+            if(s[i][j] == 'o'){
+                wins[i]++;
+            }
+        }
+    }
+    for(int i = 0; i < n; i++){
+        int win = n-1-i;
+        for(int j = 0; j < n; j++){
+            if(wins[j] == win){
+                cout << j + 1 << " ";
+            }
+        }
     }
 }

@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
 using namespace std;
-using namespace atcoder;
-using ll = long long;
+using ll = unsigned long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -33,29 +31,56 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; ll m; cin >> n >> m;
-    vc<tuple<ll, ll, ll>> edges;
-    
-    rep(i,m){
-        ll k, c; cin >> k >> c;
-        vll a(k);
-        rep(j,k){
-            cin >> a[j];
-            a[j]--;
-        }
-        rep(j,1,k){
-            edges.emplace_back(c,a[0],a[j]);
-        }
+    ll a, b, c; cin >> a >> b >> c;
+    ll pop_c = 0;
+    ll i = 0;
+    vll cv(61,0);
+    while(c > 0){
+        pop_c += c%2;
+        cv[i] = c%2;
+        i++;
+        c/=2;
     }
-    sort(all(edges));
-    dsu uf(n);
-    ll ans = 0;
-    each(edge,edges){
-        auto[c,u,v] = edge;
-        if(!uf.same(u,v)){
-            uf.merge(u,v);
-            ans += c;
-        }
+    ll ones = (a+b-pop_c)/2;
+    // cout << pop_c << endl;
+    if(!(a+b>=pop_c && (a+b-pop_c)%2==0 && a >= ones && b >= ones)){
+        cout << -1 << endl;
+        return 0;
     }
-    cout << (uf.groups().size() == 1 ? ans : -1) << endl;
+    ll x = 0, y = 0;
+    i = 0;
+
+    // each(v,cv) cout << v; cout << endl;
+
+    while(i<61){
+        if(cv[i] == 0){
+            if(ones > 0){
+                ones--;
+                x+=1L<<i;
+                y+=1L<<i;
+                a--;
+                b--;
+            }
+        }else{
+            if(a>=b){
+                a--;
+                x+=1L<<i;
+            }else{
+                b--;
+                y+=1L<<i;
+            }
+        }
+        if(a==0 && b==0){
+            break;
+        }
+        // cout << (1<<i) << " ";
+        // cout << i <<" "<< x << " " << y << endl;
+        i++;
+    }
+    if(a*b>0){
+        cout << -1 << endl;
+        return 0;
+    }
+    // cout << a << b << endl;
+    cout << x << " " << y << endl;
 }

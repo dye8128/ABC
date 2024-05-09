@@ -30,10 +30,47 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+ll INF = (1ll << 60);
+
+struct Edge{
+    ll to; ll cost;
+};
+
+using Graph = vvc<Edge>;
+
+void Dijkstra(Graph &graph, vll& distances, ll ind){
+    priority_queue<pll, vc<pll>, greater<pll>> q;
+    q.emplace((distances[ind] = 0), ind);
+
+    while(!q.empty())
+    {
+        ll distance = q.top().first;
+        ll from = q.top().second;
+        q.pop();
+
+        if(distances[from] < distance) continue;
+
+        each(edge, graph[from]){
+            ll d = (distances[from] + edge.cost);
+
+            if( d < distances[edge.to]){
+                q.emplace((distances[edge.to] = d), edge.to);
+            }
+        }
+    }
+}
+
 int main() {
     ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    Graph graph(n + 1);
+    rep(i, 1, n){
+        ll a, b, x; cin >> a >> b >> x;
+        graph[i].push_back({x, b});
+        graph[i].push_back({i + 1, a});
     }
+    
+    vll distances(n + 1, INF);
+    Dijkstra(graph, distances, 1);
+    cout << distances[n] << endl;
+    // rep(i, 1, n + 1)cout << distances[i] << " "; cout << endl;
 }

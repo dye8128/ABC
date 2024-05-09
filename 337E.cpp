@@ -30,10 +30,57 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+ll powll(ll n, ll a){
+    ll ans = 1;
+    rep(i, a){
+        ans *= n;
     }
+    return ans;
+}
+
+ll m = 0;
+
+int main() {
+    int n; cin >> n;
+    while(n > powll(2,m)) m++;
+    cout << max(m, 1ll) << endl;
+    vvll a(n, vll(m));
+    rep(i, n){
+        ll n1 = i;
+        rep(j, m){
+            a[i][j] = n1%2;
+            n1/=2;
+        }
+    }
+
+    // rep(i,n){
+    //     rep(j,m){
+    //         cout<< a[i][j];
+    //     }
+    //     cout << endl;
+    // }
+
+    rep(i, m){
+        ll k = 0;
+        vll x;
+        rep(j, n){
+            if(a[j][i] == 1){
+                x.emplace_back(j+1);
+                k++;
+            }
+        }
+        cout << k << " ";
+        each(v, x){
+            cout << v <<" ";
+        }
+        cout << endl;
+    }
+    str s; cin >> s;
+    ll ans = 0;
+    rep(i, m){
+        if(s[i] == '1'){
+            ans += powll(2,i);
+        }
+    }
+    cout << ans + 1 << endl;
 }

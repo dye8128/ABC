@@ -30,10 +30,31 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+ll search(ll a, ll l, ll r){
+    ll c1, c2;
+    while(l - r > 1){
+        c1 = (l * 2 + r)/3;
+        c2 = (l + 2 * r)/3;
+        if(abs(c1 - a) < abs(c2 - a)){
+            r = c1;
+        }else{
+            l = c2;
+        }
+    }
+    return l;
+}
+
 int main() {
-    ll n; cin >> n;
+    ll n, l ,r; cin >> n >> l >> r;
+    vll a(n);
+    rep(i,n)cin >> a[i];
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        if(a[i] <= l){
+            cout << l << " ";
+        }else if(a[i] >= r){
+            cout << r << " ";
+        }else{
+            cout << a[i] << " ";
+        }
     }
 }

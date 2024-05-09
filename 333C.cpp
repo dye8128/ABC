@@ -30,10 +30,47 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+pint func(int n){
+    int i = 1;
+    while ((i+2)*(i+1)*i/6 < n)
+    {
+        i++;
     }
+    return {i, n - i*(i+1)*(i-1)/6};
+}
+
+int main() {
+    int n; cin >> n;
+    vll a(13);
+    rep(i, 13){
+        rep(j, i + 1){
+            a[i] += pow(10, j);
+        }
+        // cout << a[i] << " ";
+    }
+    ll ans = 0;
+
+    // rep(i,3){
+    //     auto [ind, tmp] = func(n);
+    //     ans += a[ind - 1];
+    //     n = tmp;
+    //     cout << n << " " << ans << endl;
+    // }
+    int i = 1;
+    while ((i+2)*(i+1)*i/6 < n)
+    {
+        i++;
+    }
+    n -= (i + 1)*i*(i-1)/6;
+    ans += a[i-1];
+    i = 1;
+    while((i + 1)*i/2 < n)
+    {
+        i++;
+    }
+    n -= (i-1)*i/2;
+    ans += a[i-1];
+    i = 1;
+    ans += a[n-1];
+    cout << ans << endl;
 }

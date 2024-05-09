@@ -31,9 +31,16 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    ll q; cin >> q;
+    vll a(0);
+    rep(i, q){
+        ll task; cin >> task;
+        if(task == 1){
+            ll x; cin >> x;
+            a.emplace_back(x);
+        }else{
+            ll k; cin >> k;
+            cout << a[a.size()-k] << endl;
+        }
     }
 }

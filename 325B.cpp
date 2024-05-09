@@ -26,14 +26,24 @@ using vvll = vvc<ll>;
 #define each3(x,y,a)   for(auto&& [x, y] : a)
 #define each4(x,y,z,a) for(auto&& [x, y, z] : a)
 #define each(...) overload4(__VA_ARGS__, each4, each3, each2, each1)(__VA_ARGS__)
-#define all(x) (x).begin(), (x).end()
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
+    vll w(n), x(n);
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        cin >> w[i] >> x[i];
     }
+    ll ans = 0;
+    rep(i,24){
+        ll tmp = 0;
+        rep(j,n){
+            if((x[j]+i)%24>=9 && (x[j]+i)%24 < 18){
+                tmp += w[j];
+            }
+        }
+        ans = max(ans, tmp);
+    }
+    cout << ans << endl;
 }

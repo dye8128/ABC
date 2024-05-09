@@ -32,8 +32,41 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
+    str s; cin >> s;
+    vll sum01(n,0), sum10(n,0);
+    vll c(n);
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        cin >> c[i];
     }
+    if(s[0]=='0'){
+        sum10[0] = c[0];
+    }else{
+        sum01[0] = c[0];
+    }
+    rep(i,1,n){
+        if(i%2==0){
+            if(s[i] == '1'){
+                sum10[i] = sum10[i-1];
+                sum01[i] = sum01[i-1]+c[i];
+            }else{
+                sum01[i] = sum01[i-1];
+                sum10[i] = sum10[i-1]+c[i];
+            }
+        }else{
+            if(s[i] == '0'){
+                sum10[i] = sum10[i-1];
+                sum01[i] = sum01[i-1]+c[i];
+            }else{
+                sum01[i] = sum01[i-1];
+                sum10[i] = sum10[i-1]+c[i];
+            }
+        }
+    }
+    ll ans = 1e15;
+    rep(i,n-1){
+        // cout << i << " " << sum10[i]+sum01[n-1]-sum01[i] << " " << sum01[i]+sum10[n-1]-sum10[i] << endl;
+        ans = min(sum10[i]+sum01[n-1]-sum01[i],ans);
+        ans = min(sum01[i]+sum10[n-1]-sum10[i],ans);
+    }
+    cout << ans << endl;
 }

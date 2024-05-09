@@ -32,8 +32,23 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
+    vll a(n), c(n);
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        cin >> a[i] >> c[i];
     }
+    map<ll,ll> s; //色c, おいしさa
+    rep(i,n){
+        if(s.count(c[i]) == 0){
+            s[c[i]] = a[i];
+        }else{
+            ll a1 = s[c[i]];
+            a1 = min(a1, a[i]);
+            s[c[i]] = a1;
+        }
+    }
+    ll ans = 0;
+    each(v,s){
+        ans = max(ans, v.second); 
+    }
+    cout << ans << endl;
 }

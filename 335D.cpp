@@ -30,10 +30,35 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+ll n;
+bool in(ll x){
+    return x >= 0 && x < n;
+}
+
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    vll dx = {1, 0 ,-1, 0}, dy = {0, 1, 0, -1};
+    cin >> n;
+    vvll map(n, vll(n, -1));
+    ll ind = 0, x = 0, y = 0;
+    map[0][0] = 1;
+    rep(i, 1, n * n - 1){
+        if(in(x + dx[ind]) && in(y + dy[ind]) && map[x + dx[ind]][y + dy[ind]] == -1){
+            
+        }else{
+            ind = (ind + 1)%4;
+        }
+        // cout << x << y << endl;
+        x += dx[ind]; y += dy[ind];
+        map[x][y] = i + 1;
     }
+    rep(i,n){
+        rep(j, n){
+            if(map[i][j] == -1){
+                cout << "T ";
+            }else{
+                cout << map[i][j] << " ";
+            }
+        }
+        cout << endl;
+    } 
 }

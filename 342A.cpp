@@ -31,9 +31,15 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    str s; cin >> s;
+    multiset<char> a;
+    rep(i, s.size()){
+        a.insert(s[i]);
+    }
+    rep(i, s.size()){
+        if(a.count(s[i]) == 1){
+            cout << i + 1 << endl;
+            return 0;
+        }
     }
 }

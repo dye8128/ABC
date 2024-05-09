@@ -31,9 +31,32 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
+    ll n, t; cin >> n >> t;
+    map<ll, ll> m;
+    ll ans = 1;
+    m.insert({0,n});
+    vll pt(n+1);
+    rep(i, t){
         ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        if(m.find(pt[a]) != m.end()){
+            ll k = m[pt[a]];
+            m.erase(pt[a]);
+            if(k > 1) m.emplace(pt[a], k-1);
+        }
+        pt[a] += b;
+        if(m.find(pt[a]) != m.end()){
+            ll k = m[pt[a]];
+            m.erase(pt[a]);
+            m.insert({pt[a], k+1});
+        }else{
+            m.insert({pt[a], 1});
+        }
+        cout << m.size() << endl;
+
+        // cout << "-----" << endl;
+        // each(v,m){
+        //     cout << v.first << " " << v.second << endl;
+        // }
+        // cout << "-----" << endl;
     }
 }

@@ -31,9 +31,19 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    int n, m; cin >> n >> m;
+    vint a(m);
+    rep(i,m) cin >> a[i];
+    vint pnt(n);
+    int max = 0, ind = a[0];
+    rep(i,m){
+        pnt[a[i]]++;
+        if(max < pnt[a[i]]){
+            max = pnt[a[i]];
+            ind = a[i];
+        }else if(max == pnt[a[i]] && ind > a[i]){
+            ind = a[i];
+        }
+        cout << ind << endl;
     }
 }

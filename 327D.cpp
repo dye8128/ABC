@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
 using namespace std;
-using namespace atcoder;
 using ll = long long;
 using str = string;
 using pint = pair<int, int>;
@@ -28,34 +26,55 @@ using vvll = vvc<ll>;
 #define each3(x,y,a)   for(auto&& [x, y] : a)
 #define each4(x,y,z,a) for(auto&& [x, y, z] : a)
 #define each(...) overload4(__VA_ARGS__, each4, each3, each2, each1)(__VA_ARGS__)
-#define all(x) (x).begin(), (x).end()
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; ll m; cin >> n >> m;
-    vc<tuple<ll, ll, ll>> edges;
-    
-    rep(i,m){
-        ll k, c; cin >> k >> c;
-        vll a(k);
-        rep(j,k){
-            cin >> a[j];
-            a[j]--;
-        }
-        rep(j,1,k){
-            edges.emplace_back(c,a[0],a[j]);
-        }
+    vint x(2e5+1, -1);
+    int n, m; cin >> n >> m;
+    vint a(m);
+    for(int i = 0; i < m; i++){
+        cin >> a.at(i);
     }
-    sort(all(edges));
-    dsu uf(n);
-    ll ans = 0;
-    each(edge,edges){
-        auto[c,u,v] = edge;
-        if(!uf.same(u,v)){
-            uf.merge(u,v);
-            ans += c;
-        }
+    vint b(m);
+    for(int i = 0; i < m; i++){
+        cin >> b.at(i);
     }
-    cout << (uf.groups().size() == 1 ? ans : -1) << endl;
+    x[b[0]] = 0;
+    bool flag = true;
+    ll i = 0;
+    while(i <= a.size()){
+        if(x[b[i]] == x[a[i]] && x[b[i]] != -1){
+            flag = false;
+        }
+        if(x[b[i]] == -1){
+            if(x[a[i]] == 0){
+                x[b[i]] = 1;
+            }else if(x[a[i]] == 1){
+                x[b[i]] = 0;
+            }else if(x[a[i]] == -1){
+                a.emplace_back(a[i]);
+                b.emplace_back(b[i]);
+                continue;
+            }
+        }else if(x[b[i]] == 1){
+            x[a[i]] = 0;
+        }else if(x[b[i]] == 0){
+            x[a[i]] = 1;
+        }
+        if(x[a[i]] == -1){
+            if(x[b[i]] == 0){
+                x[a[i]] = 1;
+            }else{
+                x[a[i]] = 0;
+            }
+        }else if(x[a[i]] == 1){
+            x[b[i]] = 0;
+        }else if(x[a[i]] == 0){
+            x[b[i]] = 1;
+        }
+        i++;
+    }
+    yesno(flag);
+    cout << a.size() << endl;
 }

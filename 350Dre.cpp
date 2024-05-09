@@ -30,10 +30,43 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+vll seen;
+
+void dfs(vvll &g, ll v, ll &c, ll &visit){
+    seen[v] = 1;
+    c++;
+    visit++;
+
+    each(next, g[v]){
+        if(seen[next] == 0){
+            dfs(g, next, c, visit);
+        }
     }
+}
+
+int main() {
+    ll n, m; cin >> n >> m;
+    vvll g(n);
+    rep(i,m){
+        ll a, b; cin >> a >> b;
+        a--; b--;
+        g[a].emplace_back(b);
+        g[b].emplace_back(a);
+    }
+
+    ll s = 0, visit = 0;
+    seen.resize(n,0);
+    vll vs;// 連結グラフの頂点数
+    while(visit < n){
+        while(seen[s] == 1) s++;
+        ll c = 0;
+        dfs(g, s, c, visit);
+        vs.emplace_back(c);
+    }
+    ll ans = 0;
+    each(v, vs){
+        ans += v * (v - 1) / 2;
+    }
+    ans -= m;
+    cout << ans << endl;
 }

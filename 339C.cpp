@@ -32,8 +32,15 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    vll a(n);
+    rep(i, n){
+        cin >> a[i];
     }
+    ll m = 1e7, sum = 0;
+    rep(i, n){
+        sum += a[i];
+        m = min(m, sum);
+    }
+    if(m >= 0) m = 0;
+    cout << -m + sum << endl;
 }

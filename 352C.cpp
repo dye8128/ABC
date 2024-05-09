@@ -32,8 +32,15 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
+    vll a(n), b(n);
+    rep(i,n) cin >> a[i] >> b[i];
+    ll sum = 0;
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        sum += a[i];
     }
+    ll ans = 0;
+    rep(i,n){
+        ans = max(ans, sum - a[i] + b[i]);
+    }
+    cout << ans << endl;
 }

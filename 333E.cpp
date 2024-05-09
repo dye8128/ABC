@@ -32,8 +32,47 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
+    vll monster(n), ans;
+    vll ts(n), xs(n);
     rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+        cin >> ts[i] >> xs[i];
+        xs[i]--;
     }
+    rep(_,n){
+        ll i = n - 1 -_;
+        ll t, x;
+        t = ts[i]; x = xs[i];
+        if(t == 2){
+            monster[x] ++;
+        }
+        if(t == 1){
+            if(monster[x] > 0){
+                ans.emplace_back(1);
+                monster[x] --;
+            }else{
+                ans.emplace_back(0);
+            }
+        }
+    }
+    if(reduce(all(monster)) > 0){
+        cout << -1 << endl;
+        return 0; 
+    }
+    ll pos = 0, m = 0, ind = ans.size() - 1;
+    rep(i,n){
+        ll t = ts[i], x = xs[i];
+        if(t == 2){
+            pos--;
+        }
+        if(t == 1){
+            if(ans[ind] == 1l){
+                pos++;
+                m = max(m, pos);
+            }
+            ind--;
+        }
+        // cout << pos <<" "<< ind << endl;
+    }
+    cout << m << endl;
+    rep(i,ans.size()) cout << ans[ans.size() - 1 - i] << " "; cout << endl;
 }

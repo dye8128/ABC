@@ -30,10 +30,39 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+ll modify(ll x, ll n){
+    if(x >= n) return x - n;
+    if(x < 0) return x + n;
+    return x;
+}
+
 int main() {
-    ll n; cin >> n;
-    rep(i,n){
-        ll a, b; cin >> a >> b;
-        cout << (a+b) / 2 << " " << (a-b) / 2 << endl;
+    ll h, w, n; cin >> h >> w >> n;
+    vll dy = {0, 1, 0, -1}, dx = {-1, 0, 1, 0};
+    ll ind = 0;
+    ll x = 0, y = 0;
+    vstr a(h);
+    rep(i, h){
+        rep(j, w){
+            a[i] += '.';
+        }
+    }
+    rep(i, n){
+        if(a[x][y] == '.'){
+            a[x][y] = '#';
+            ind = (ind + 1) % 4;
+        }else{
+            a[x][y] = '.';
+            ind = (ind + 3) % 4;
+        }
+        x += dx[ind]; y += dy[ind];
+        x = modify(x, h);
+        y = modify(y, w);
+        // rep(i, h){
+        //     cout << a[i] << endl;
+        // }cout << endl;
+    }
+    rep(i, h){
+        cout << a[i] << endl;
     }
 }
