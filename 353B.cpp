@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -32,50 +31,19 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    vll a(n); rep(i,n) cin >> a[i];
-    vll keta(n);
-    // rep(i,n) keta[i] = log10(a[i] + 1) + 1;
+    ll n, k; cin >> n >> k;
+    vll a(n);
     rep(i, n){
-        ll k = 0, v = a[i];
-        while(v >= 1){
-            v /= 10;
-            k++;
+        cin >> a[i];
+    }
+    ll kk = k, ans = 0;
+    rep(i,n){
+        if(kk < a[i]){
+            kk = k;
+            ans += 1;
         }
-        keta[i] = k;
+        kk -= a[i];
     }
-    vvll ketas(n, vll(11));
-    vll sum(n);
-    rep(i, n){
-        sum[i] = a[i];
-        if(i > 0){
-            rep(j,1,11) ketas[i][j] = ketas[i - 1][j];
-            sum[i] += sum[i - 1];
-            sum[i] %= 998244353;
-        }
-        ketas[i][keta[i]]++;
-    }
-
-    // rep(i,n){
-    //     rep(j,1,11) cout << ketas[i][j] << " ";
-    //     cout << endl;
-    // }
-
-    ll ans = 0;
-    // rep(i,n){
-    //     ll mult = 0;
-    //     rep(j,1,11){
-    //         mult += (ketas[n-1][j] - ketas[i][j]) * pow(10,j);
-    //     }
-    //     ans += a[i] * mult;
-    //     ans += sum[n - 1] - sum[i];
-    //     ans %= 998244353;
-    // }
-    rep(i,1,n){
-        ans += sum[i - 1] * ll(pow(10, keta[i]));
-        ans %= 998244353;
-        ans += a[i] * i;
-        ans %= 998244353;
-    }
+    if(kk != k) ans ++;
     cout << ans << endl;
 }

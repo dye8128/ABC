@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
+#include <atcoder/modint>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -32,6 +32,7 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
+    using modint = atcoder::static_modint<998244353>;
     ll n; cin >> n;
     vll a(n); rep(i,n) cin >> a[i];
     vll keta(n);
@@ -45,13 +46,13 @@ int main() {
         keta[i] = k;
     }
     vvll ketas(n, vll(11));
-    vll sum(n);
+    vc<modint> sum(n);
     rep(i, n){
         sum[i] = a[i];
         if(i > 0){
             rep(j,1,11) ketas[i][j] = ketas[i - 1][j];
             sum[i] += sum[i - 1];
-            sum[i] %= 998244353;
+            // sum[i] %= 998244353;
         }
         ketas[i][keta[i]]++;
     }
@@ -61,21 +62,21 @@ int main() {
     //     cout << endl;
     // }
 
-    ll ans = 0;
-    // rep(i,n){
-    //     ll mult = 0;
-    //     rep(j,1,11){
-    //         mult += (ketas[n-1][j] - ketas[i][j]) * pow(10,j);
-    //     }
-    //     ans += a[i] * mult;
-    //     ans += sum[n - 1] - sum[i];
-    //     ans %= 998244353;
-    // }
-    rep(i,1,n){
-        ans += sum[i - 1] * ll(pow(10, keta[i]));
-        ans %= 998244353;
-        ans += a[i] * i;
-        ans %= 998244353;
+    modint ans = 0;
+    rep(i,n){
+        modint mult = 0;
+        rep(j,1,11){
+            mult += (ketas[n-1][j] - ketas[i][j]) * ll(pow(10,j));
+        }
+        ans += a[i] * mult;
+        ans += sum[n - 1] - sum[i];
+        // ans %= 998244353;
     }
-    cout << ans << endl;
+    // rep(i,1,n){
+    //     ans += sum[i - 1] * ll(pow(10, keta[i]));
+    //     // ans %= 998244353;
+    //     ans += a[i] * i;
+    //     // ans %= 998244353;
+    // }
+    cout << ans.val() << endl;
 }
