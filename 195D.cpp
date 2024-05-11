@@ -34,35 +34,30 @@ int main() {
     ll n,m,q; cin >> n >> m >> q;
     vll w(n), v(n);
     rep(i, n) cin >> w[i] >> v[i];
-    vc<pll> x(m);
+    vll x(m);
     rep(i, m){ 
-        cin >> x[i].first;
-        x[i].second = i + 1;
+        cin >> x[i];
     }
-    sort(all(x));
-    vc<pll> wv(n);
-    rep(i, n){
-        wv[i] = {w[i], v[i]};
-    }
-    sort(all(wv));
+
     rep(_, q){
         ll l,r; cin >> l >> r;
+        l--;r--;
         ll ans = 0;
         vll boxed(n,0);
         rep(i, m){
-            ll j = 0, max_v = 0;
-            while(j < n && x[i].first >= wv[j].first){
-                if(x[i].second >= l && x[i].second <= r){
-                    break;
-                }else{
-                    if(boxed[j] == 0 && max_v < wv[j].second){
-                        boxed[j] = 1;
-                        max_v = wv[j].second;
+            ll max_v = 0, max_j = -1;
+            if(i <= r && i >= l){
+                continue;
+            }else{
+                rep(j, n){
+                    if(w[j] <= x[i] && !boxed[j] && v[j] > max_v){
+                        max_v = v[j];
+                        max_j = j;
                     }
                 }
-                j++;
             }
             ans += max_v;
+            if(max_j >= 0) boxed[max_j] = 1;
         }
         cout << ans << endl;
     }
