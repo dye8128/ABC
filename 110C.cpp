@@ -32,5 +32,27 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     str s, t; cin >> s >> t;
-    
+    vll alph(26, -1);
+    ll n = s.size();
+    rep(i,n){
+        ll c = s[i] - 'a';
+        if(alph[c] == -1){
+            alph[c] = t[i] - 'a';
+        }else if(alph[c] != t[i] - 'a'){
+            cout << "No" << endl;
+            return 0;
+        }
+    }
+
+    vll used(26,0);
+    rep(i,26){
+        if(alph[i] == -1) continue;
+        if(!used[alph[i]]){
+            used[alph[i]] = 1;
+        }else{
+            cout << "No" << endl;
+            return 0;
+        }
+    }
+    cout << "Yes" << endl;
 }
