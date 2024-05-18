@@ -31,28 +31,14 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    str s, t; cin >> s >> t;
-    vll alph(26, -1);
-    ll n = s.size();
-    rep(i,n){
-        ll c = s[i] - 'a';
-        if(alph[c] == -1){
-            alph[c] = t[i] - 'a';
-        }else if(alph[c] != t[i] - 'a'){
-            cout << "No" << endl;
-            return 0;
-        }
-    }
+    ll n, k; cin >> n >> k;
+    vll x(n); rep(i,n) cin >> x[i];
+    ll ans = 1e9;
 
-    vll used(26,0);
-    rep(i,26){
-        if(alph[i] == -1) continue;
-        if(!used[alph[i]]){
-            used[alph[i]] = 1;
-        }else{
-            cout << "No" << endl;
-            return 0;
-        }
+    rep(i,n-k+1){
+        ll tmp = x[i+k-1]-x[i]+min(abs(x[i]),abs(x[i+k-1]));
+        // cout << i << ":" << tmp << endl;
+        ans = min(ans, tmp);
     }
-    cout << "Yes" << endl;
+    cout << ans << endl;
 }

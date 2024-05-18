@@ -31,28 +31,27 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    str s, t; cin >> s >> t;
-    vll alph(26, -1);
-    ll n = s.size();
+    ll n, C; cin >> n >> C;
+    vll a(n), b(n), c(n);
+    rep(i,n)cin >> a[i] >> b[i] >> c[i];
+    // time, cost, a or b 
+    vc<tuple<ll,ll,ll>> tp;
     rep(i,n){
-        ll c = s[i] - 'a';
-        if(alph[c] == -1){
-            alph[c] = t[i] - 'a';
-        }else if(alph[c] != t[i] - 'a'){
-            cout << "No" << endl;
-            return 0;
-        }
+        tp.emplace_back(make_tuple(a[i]-1, c[i], 0ll));
+        tp.emplace_back(make_tuple(b[i], c[i], 1ll));
     }
-
-    vll used(26,0);
-    rep(i,26){
-        if(alph[i] == -1) continue;
-        if(!used[alph[i]]){
-            used[alph[i]] = 1;
+    sort(all(tp));
+    // each(v,tp) cout << get<0>(v) << endl;
+    ll costs = 0, t = 0, t0 = 0, ans = 0;
+    rep(i,2 * n){
+        t = get<0>(tp[i]);
+        ans += min(C, costs) * (t - t0);
+        if(get<2>(tp[i]) == 0){
+            costs += get<1>(tp[i]);
         }else{
-            cout << "No" << endl;
-            return 0;
+            costs -= get<1>(tp[i]);
         }
+        t0 = t;
     }
-    cout << "Yes" << endl;
+    cout << ans << endl;
 }
