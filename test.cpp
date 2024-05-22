@@ -32,6 +32,7 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll m = 998244353;
+    ll a; cin >> a;
     cout << m * m << endl;
     cout << LONG_MAX << endl;
 }
