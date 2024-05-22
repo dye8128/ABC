@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-a+1
-=======
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -34,15 +31,23 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n, k; cin >> n >> k;
-    vll x(n); rep(i,n) cin >> x[i];
-    ll ans = 1e9;
-
-    rep(i,n-k+1){
-        ll tmp = x[i+k-1]-x[i]+min(abs(x[i]),abs(x[i+k-1]));
-        // cout << i << ":" << tmp << endl;
-        ans = min(ans, tmp);
+    ll n; cin >> n;
+    vll a(n), c(n);
+    vll ind(n);
+    iota(all(ind),0);
+    rep(i,n){
+        cin >> a[i] >> c[i];
     }
-    cout << ans << endl;
+    sort(all(ind), [&](const auto l, const auto r){return c[l] < c[r];});
+    // each(v,ind) cout << v;
+    vll ans; ll v = 0;
+    each(i,ind){
+        if(a[i] > v){
+            v = a[i];
+            ans.emplace_back(i);
+        }
+    }
+    sort(all(ans));
+    cout << ans.size() << endl;
+    each(v, ans) cout << v + 1 << " "; cout << endl;
 }
->>>>>>> 7e681aa6ec27e8bbdd8fd3e30b8883656c108c3a

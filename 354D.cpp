@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-a+1
-=======
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -34,15 +31,25 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n, k; cin >> n >> k;
-    vll x(n); rep(i,n) cin >> x[i];
-    ll ans = 1e9;
+    ll a,b,c,d; cin >> a >> b >> c >> d;
+    a += ll(1e10); b += ll(1e10); c += ll(1e10); d += ll(1e10);
+    ll ma = a%4, qa = a/4, mc = c%4, qc = c/4;
+    // cout << ma << " " << qa - 2500000000 << " " << mc << " " << qc - 2500000000 << endl;
 
-    rep(i,n-k+1){
-        ll tmp = x[i+k-1]-x[i]+min(abs(x[i]),abs(x[i+k-1]));
-        // cout << i << ":" << tmp << endl;
-        ans = min(ans, tmp);
+    ll ans = 4 * (qc - qa) * (d - b);
+    // cout << ans << endl;
+
+    vvll r = {{1,2,1,0},{2,1,0,1}};
+    ll tmp = 0;
+    rep(i,ma) tmp -= r[0][i] + r[1][i];
+    rep(i,mc) tmp += r[0][i] + r[1][i];
+    ans += (d-b)/2 * tmp;
+    // cout << ans << endl;
+
+    if((d-b) % 2 == 1){
+        // cout << "odd" << endl;
+        rep(i,ma) ans -= r[d%2][i];
+        rep(i,mc) ans += r[d%2][i];
     }
     cout << ans << endl;
 }
->>>>>>> 7e681aa6ec27e8bbdd8fd3e30b8883656c108c3a
