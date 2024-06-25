@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -30,16 +31,23 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+using mint = atcoder::modint998244353;
+
+ll log(ll n){
+    ll ans = 0;
+    while(n > 0){
+        ans++;
+        n/=10;
+    }
+    return ans;
+}
+
 int main() {
-    ll h, w; cin >> h >> w;
-    vvll a(h,vll(w,0));
-    rep(i,h){
-        rep(j,w) cin >> a[i][j];
-    }
-    rep(i,h){
-        rep(j,w){
-            cout << (a[i][j] == 0 ? '.' : char('A' + a[i][j] - 1));
-        }
-        cout << endl;
-    }
+    ll n; cin >> n;
+    mint ans = n;
+    ll len = log(n);
+    mint m = mint(10).pow(len);
+    ans *= m.pow(n)-1;
+    ans /= m - 1;
+    cout << ans.val() << endl;
 }

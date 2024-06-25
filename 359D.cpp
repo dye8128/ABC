@@ -30,16 +30,27 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+#include <atcoder/all>
+using namespace atcoder;
+using mint = modint998244353;
+
 int main() {
-    ll h, w; cin >> h >> w;
-    vvll a(h,vll(w,0));
-    rep(i,h){
-        rep(j,w) cin >> a[i][j];
-    }
-    rep(i,h){
-        rep(j,w){
-            cout << (a[i][j] == 0 ? '.' : char('A' + a[i][j] - 1));
+    ll n, k; cin >> n >> k;
+    str s; cin >> s;
+    mint ans = 0;
+    rep(i,1<<k){
+        str t;
+        rep(j,k){
+            if(i>>j&1) t += 'B'; else t += 'A';
         }
-        cout << endl;
+        cout << t << endl;
+        rep(j,k/2) if (t[j] != t[k-j-1]) continue;
+        rep(j,n-k+1){
+            bool flag = true;
+            rep(l,k) if(s[j+l] != t[l]) flag = false;
+            if(flag) ans += 1;
+        }
     }
+
+    cout << ans.val() << endl;
 }

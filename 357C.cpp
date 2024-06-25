@@ -30,15 +30,30 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
-    ll h, w; cin >> h >> w;
-    vvll a(h,vll(w,0));
-    rep(i,h){
-        rep(j,w) cin >> a[i][j];
+vvll grid(ll n){
+    vvll ans(pow(3,n),vll(pow(3,n)));
+    if(n == 0) return {{'#'}};
+    auto a = grid(n-1);
+    ll nn = pow(3,n-1);
+    rep(i,3){
+        rep(j,3){
+            rep(k,nn){
+                rep(l,nn){
+                    ans[i*nn+k][j*nn+l] = (i == 1 && j == 1 ? '.' : a[k][l]);
+                }
+            }
+        }
     }
-    rep(i,h){
-        rep(j,w){
-            cout << (a[i][j] == 0 ? '.' : char('A' + a[i][j] - 1));
+    return ans;
+}
+
+int main() {
+    ll n; cin >> n;
+    
+    vvll ans = grid(n);
+    rep(i,pow(3,n)){
+        rep(j,pow(3,n)){
+            cout << char(ans[i][j]);
         }
         cout << endl;
     }

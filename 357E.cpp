@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -30,47 +31,56 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-int main() {
+using namespace atcoder;
+
+int main(){
     ll n; cin >> n;
-    vll h(n); rep(n) cin >> h[i];
-    vll ind(n);
-    iota(all(ind), 0);
-    sort(all(ind), [&](ll i, ll j){return h[i] < h[j];});
-    reverse(all(ind));
-    // each(i, ind) cout << i << " "; cout << endl;
-    vll ans(n+1); ans[0] = 1;
-    vll cols(n);
-    set<ll> s;
+    vll a(n);
+    vvll inv(n);
+    dsu g(n);
     rep(n){
-        if(s.empty()){
-            s.insert(ind[i]);
-            cols[ind[i]] = ind[i] + 1;
+        cin >> a[i];
+        a[i]--;
+        inv[a[i]].emplace_back(i);
+        g.merge(i, a[i]);
+    }
+    ll ans = 0;
+    each(arr, g.groups()){
+        if(arr.size() == 1){
+            ans += 1;
             continue;
         }
-        ll m = *s.begin();
-        // cout << m << endl;
-        if(m > ind[i]){
-            cols[ind[i]] = ind[i] + 1;
-            s.insert(ind[i]);
-        }else{
-            auto it = upper_bound(all(s), ind[i]);
-            if(*it == *s.begin()){
-                // cout << "A" << endl;
-                cols[ind[i]] = ind[i] + 1;
-                s.insert(ind[i]);
-                continue;
+        ll v = arr[0];
+        vll seen(n,0);
+        while(seen[v] == 0){
+            seen[v] = 1;
+            v = a[v];
+        }
+        ll v2 = a[v];
+        ll cnt = 1;
+        queue<ll> q; q.push(v2);
+        vll dist(n,0); dist[v2] = 0;
+        seen.assign(n,0); seen[v2] = 1;
+        while(v2 != v){
+            v2 = a[v2];
+            cnt++;
+            q.push(v2);
+            dist[v2] = 0;
+            seen[v2] = 1;
+        }
+        ans += cnt * q.size();
+        // rep(j,n) if(seen[j]) cout << j+1 << " "; cout << endl;
+        while(!q.empty()){
+            ll u = q.front(); q.pop();
+            each(j, inv[u]){
+                if(!seen[j]){
+                    seen[j] = 1;
+                    dist[j] = dist[u] + 1;
+                    ans += dist[j] + cnt;
+                    q.push(j);
+                }
             }
-            it--;
-            cols[ind[i]] = ind[i] - (*it);
-            s.insert(ind[i]);
         }
     }
-    // rep(n) cout << cols[i] << " "; cout << endl;
-    rep(n){
-        ans[i+1] = cols[i] * h[i] + ans[i+1-cols[i]];
-    }
-    rep(n){
-        cout << ans[i+1] << " ";
-    }
-    cout << endl;
+    cout << ans << endl;
 }
