@@ -31,12 +31,9 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll x; cin >> x;
-    // cout << x << endl;
-    x+=ll(1e18);
-    // cout << x << endl;
-    ll ans = (x-1)/10+1;
-    // cout << ans << endl;
-    ans -= ll(1e18/10);
+    ll n, a, b; cin >> n >> a >> b;
+    ll ans = 10000;
+    ans = min(ans, n*a);
+    ans = min(ans, b);
     cout << ans << endl;
 }

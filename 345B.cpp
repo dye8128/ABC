@@ -31,12 +31,41 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll x; cin >> x;
-    // cout << x << endl;
-    x+=ll(1e18);
-    // cout << x << endl;
-    ll ans = (x-1)/10+1;
-    // cout << ans << endl;
-    ans -= ll(1e18/10);
-    cout << ans << endl;
+    str x_str; cin >> x_str;
+    if(x_str.size() == 1){
+        cout << !(x_str[0] == '0') << endl;
+        return 0;
+    }
+    if(x_str.size() == 2 && x_str[0] == '-'){
+        cout << 0 << endl;
+        return 0;
+    }
+    ll i = x_str.size()-2;
+    if(x_str.back() == '0'){
+        rep(i, x_str.size()-1){
+            cout << x_str[i];
+        }
+        cout << endl;
+        return 0;
+    }
+    if(x_str[0] == '-'){
+        // while(x_str[i] == '0'){
+        //     x_str[i] = '9';
+        //     i--;
+        // }
+    }else{
+        if(x_str[i] != '9'){
+            x_str[i]++;
+        }else{
+            while(x_str[i] == '9' && i>=0){
+                x_str[i] = '0';
+                i--;
+            }
+            if(x_str[0] == '0') cout << 1;
+        }
+    }
+    rep(i, x_str.size() - 1){
+        cout << x_str[i];
+    }
+    cout << endl;
 }
