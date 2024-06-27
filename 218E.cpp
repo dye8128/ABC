@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -30,16 +31,33 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+using namespace atcoder;
+
 int main() {
-    ll h, w; cin >> h >> w;
-    vvll a(h,vll(w,0));
-    rep(i,h){
-        rep(j,w) cin >> a[i][j];
+    ll n, m; cin >> n >> m;
+    vll a(m), b(m), c(m); 
+    rep(m){ 
+        cin >> a[i] >> b[i] >> c[i];
+        a[i]--; b[i]--;
     }
-    rep(i,h){
-        rep(j,w){
-            cout << (a[i][j] == 0 ? '.' : char('A' + a[i][j] - 1));
+    vll ind(m);
+    iota(all(ind), 0);
+    sort(all(ind), [&](const ll i, const ll j){return c[i] < c[j];});
+    dsu d(n);
+    ll i = 0;
+    ll ans = 0;
+    while(d.size(0) < n){
+        // cout << i << ":" << a[ind[i]] << " " << b[ind[i]] << ", size = " << d.size(0) << endl;
+        if(!d.same(a[ind[i]],b[ind[i]])){
+            d.merge(a[ind[i]], b[ind[i]]);
+        }else{
+            ans += max(0ll, c[ind[i]]);
         }
-        cout << endl;
+        i++;
     }
+    while(i < m){
+        ans += max(0ll, c[ind[i]]);
+        i++;
+    }
+    cout << ans << endl;
 }

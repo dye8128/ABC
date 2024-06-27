@@ -30,16 +30,35 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+ll h, w; 
+
+bool in(ll x, ll y){
+    return x >= 0 && x < h && y >= 0 && y < w;
+}
+
 int main() {
-    ll h, w; cin >> h >> w;
-    vvll a(h,vll(w,0));
-    rep(i,h){
-        rep(j,w) cin >> a[i][j];
-    }
-    rep(i,h){
-        rep(j,w){
-            cout << (a[i][j] == 0 ? '.' : char('A' + a[i][j] - 1));
+    cin >> h >> w;
+    vstr s(h);
+    rep(i,h) cin >> s[i];
+    vll dx = {1,0,-1,0}, dy = {0,1,0,-1};
+    vvll dist(h, vll(w,-1));
+    vvll seen(h, vll(w,0));
+    queue<pll> q;
+    q.push({0,0}); seen[0][0] = 1; dist[0][0] = 1;
+    while(!q.empty()){
+        auto [x, y] = q.front(); q.pop();
+        rep(i,4){
+            if(in(x+dx[i],y+dy[i]) && !seen[x+dx[i]][y+dy[i]]){
+                seen[x+dx[i]][y+dy[i]] = 1;
+                if(s[x+dx[i]][y+dy[i]] == '.'){
+                    dist[x+dx[i]][y+dy[i]] = dist[x][y] + 1;
+                    q.push({x+dx[i],y+dy[i]});
+                }
+            }
         }
-        cout << endl;
     }
+    ll white = 0;
+    rep(h) each(c,s[i]) white += (c == '.');
+
+    cout << (dist[h-1][w-1] > 0 ? white - dist[h-1][w-1] : -1) << endl;
 }

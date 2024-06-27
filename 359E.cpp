@@ -31,15 +31,46 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll h, w; cin >> h >> w;
-    vvll a(h,vll(w,0));
-    rep(i,h){
-        rep(j,w) cin >> a[i][j];
-    }
-    rep(i,h){
-        rep(j,w){
-            cout << (a[i][j] == 0 ? '.' : char('A' + a[i][j] - 1));
+    ll n; cin >> n;
+    vll h(n); rep(n) cin >> h[i];
+    vll ind(n);
+    iota(all(ind), 0);
+    sort(all(ind), [&](ll i, ll j){return h[i] < h[j];});
+    reverse(all(ind));
+    // each(i, ind) cout << i << " "; cout << endl;
+    vll ans(n+1); ans[0] = 1;
+    vll cols(n);
+    set<ll> s;
+    rep(n){
+        if(s.empty()){
+            s.insert(ind[i]);
+            cols[ind[i]] = ind[i] + 1;
+            continue;
         }
-        cout << endl;
+        ll m = *s.begin();
+        // cout << m << endl;
+        if(m > ind[i]){
+            cols[ind[i]] = ind[i] + 1;
+            s.insert(ind[i]);
+        }else{
+            auto it = s.lower_bound(ind[i]);
+            if(it == s.begin()){
+                // cout << "A" << endl;
+                cols[ind[i]] = ind[i] + 1;
+                s.insert(ind[i]);
+                continue;
+            }
+            it--;
+            cols[ind[i]] = ind[i] - (*it);
+            s.insert(ind[i]);
+        }
     }
+    // rep(n) cout << cols[i] << " "; cout << endl;
+    rep(n){
+        ans[i+1] = cols[i] * h[i] + ans[i+1-cols[i]];
+    }
+    rep(n){
+        cout << ans[i+1] << " ";
+    }
+    cout << endl;
 }

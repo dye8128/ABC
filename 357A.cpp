@@ -31,15 +31,13 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll h, w; cin >> h >> w;
-    vvll a(h,vll(w,0));
-    rep(i,h){
-        rep(j,w) cin >> a[i][j];
+    ll n, m; cin >> n >> m;
+    vll h(n); rep(i,n) cin >> h[i];
+    ll ans = 0;
+    while(m >= 0 && ans < n){
+        m -= h[ans];
+        ans++;
     }
-    rep(i,h){
-        rep(j,w){
-            cout << (a[i][j] == 0 ? '.' : char('A' + a[i][j] - 1));
-        }
-        cout << endl;
-    }
+    if(m >= 0) ans ++;
+    cout << max(0ll,ans-1) << endl;
 }
