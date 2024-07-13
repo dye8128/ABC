@@ -30,24 +30,40 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+#include <atcoder/modint>
+using mint = atcoder::modint998244353;
+
 int main() {
     ll n; cin >> n;
-    vll l(n), r(n); rep(n) cin >> l[i] >> r[i];
-    vll suml(n+1,0), sumr(n+1,0);
-    rep(i,1,n+1){
-        suml[i] = suml[i-1] + l[i-1];
-        sumr[i] = sumr[i-1] + r[i-1];
+    vll a(n); rep(n) cin >> a[i];
+    
+    vvc<map<ll,mint>> dp(n, vc<map<ll,mint>>(n+1));
+    rep(i,1,n){
+        rep(j,i){
+            dp[i][2][a[i]-a[j]]++;
+        }
     }
-    if((suml[n] > 0ll) || (sumr[n] < 0ll)){
-        cout << "No" << endl;
-        return 0;
+    // cout << "ok" << endl;
+    rep(k,3,n+1){
+        rep(i,k-1,n){
+            rep(j,i){
+                each(x, dp[j][k-1]){
+                    if(x.first+a[j]==a[i]){
+                        dp[i][k][x.first]+=x.second;
+                    }
+                }
+            }
+        }
     }
-    vll x=l;
-    ll sum=suml[n];
-    rep(n){
-        x[i] += min(-sum, r[i]-l[i]);
-        sum = min(0ll,sum+r[i]-l[i]);
-        cout << x[i] << " ";
+    cout << n << " ";
+    rep(i,2,n+1){
+        mint sum = 0;
+        rep(j,n){
+            each(x, dp[j][i]){
+                sum += x.second;
+            }
+        }
+        cout << sum.val() << " ";
     }
     cout << endl;
 }

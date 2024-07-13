@@ -31,23 +31,33 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    vll l(n), r(n); rep(n) cin >> l[i] >> r[i];
-    vll suml(n+1,0), sumr(n+1,0);
-    rep(i,1,n+1){
-        suml[i] = suml[i-1] + l[i-1];
-        sumr[i] = sumr[i-1] + r[i-1];
+    ll n, m; cin >> n >> m;
+    vll a(n); rep(n) cin >> a[i];
+
+    struct Edge { ll to; ll cost; };
+
+    vvc<Edge> g(n);
+    rep(m){
+        ll u, v, b; cin >> u >> v >> b;
+        --u, --v;
+        g[u].push_back({v, a[v]+b});
+        g[v].push_back({u, a[u]+b});
     }
-    if((suml[n] > 0ll) || (sumr[n] < 0ll)){
-        cout << "No" << endl;
-        return 0;
+
+    vll dist(n, 1ll<<60);
+    priority_queue<ll, vll, greater<ll>> q;
+    // dist, from
+    q.push(0);
+    dist[0] = a[0]; 
+    while(!q.empty()){
+        auto from = q.top(); q.pop();
+        each(e, g[from]){
+            if(dist[e.to] > dist[from] + e.cost){
+                dist[e.to] = dist[from] + e.cost;
+                q.push(e.to);
+            }
+        }
     }
-    vll x=l;
-    ll sum=suml[n];
-    rep(n){
-        x[i] += min(-sum, r[i]-l[i]);
-        sum = min(0ll,sum+r[i]-l[i]);
-        cout << x[i] << " ";
-    }
+    rep(i,1,n) cout << (dist[i] == 1ll<<60 ? -1 : dist[i]) << " ";
     cout << endl;
 }

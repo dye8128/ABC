@@ -30,24 +30,24 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+ll d (ll a) {return a * a;}
+
+ll len(pll a, pll b){
+    return (d(a.first-b.first) + d(a.second-b.second));
+}
+
 int main() {
-    ll n; cin >> n;
-    vll l(n), r(n); rep(n) cin >> l[i] >> r[i];
-    vll suml(n+1,0), sumr(n+1,0);
-    rep(i,1,n+1){
-        suml[i] = suml[i-1] + l[i-1];
-        sumr[i] = sumr[i-1] + r[i-1];
+    vpll a(3);
+    rep(3) cin >> a[i].first >> a[i].second;
+    rep(i,3)rep(j,3)rep(k,3){
+        if(i==j||j==k||k==i) continue;
+        // cout << i << j << k << endl;
+        // cout << len(a[i],a[j])+len(a[j],a[k]) << " " << len(a[k],a[i]) << endl;
+        if(len(a[i],a[j])+len(a[j],a[k]) == len(a[k],a[i])){
+            cout << "Yes" << endl;
+            // cout << i << j << k;
+            return 0;
+        }
     }
-    if((suml[n] > 0ll) || (sumr[n] < 0ll)){
-        cout << "No" << endl;
-        return 0;
-    }
-    vll x=l;
-    ll sum=suml[n];
-    rep(n){
-        x[i] += min(-sum, r[i]-l[i]);
-        sum = min(0ll,sum+r[i]-l[i]);
-        cout << x[i] << " ";
-    }
-    cout << endl;
+    cout << "No" << endl;
 }

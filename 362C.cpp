@@ -42,6 +42,7 @@ int main() {
         cout << "No" << endl;
         return 0;
     }
+    cout << "Yes" << endl;
     vll x=l;
     ll sum=suml[n];
     rep(n){

@@ -31,23 +31,9 @@ using vvll = vvc<ll>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    vll l(n), r(n); rep(n) cin >> l[i] >> r[i];
-    vll suml(n+1,0), sumr(n+1,0);
-    rep(i,1,n+1){
-        suml[i] = suml[i-1] + l[i-1];
-        sumr[i] = sumr[i-1] + r[i-1];
-    }
-    if((suml[n] > 0ll) || (sumr[n] < 0ll)){
-        cout << "No" << endl;
-        return 0;
-    }
-    vll x=l;
-    ll sum=suml[n];
-    rep(n){
-        x[i] += min(-sum, r[i]-l[i]);
-        sum = min(0ll,sum+r[i]-l[i]);
-        cout << x[i] << " ";
-    }
-    cout << endl;
+    ll r, g, b; cin >> r >> g >> b;
+    str c; cin >> c;
+    if(c == "Red") cout << min(g,b) << endl;
+    if(c == "Green") cout << min(r,b) << endl;
+    if(c == "Blue") cout << min(g,r) << endl;
 }
