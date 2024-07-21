@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,12 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
-    ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
-            }
-        }
-        ans = min(ans, cal(ok, a));
+    ll n, k; cin >> n >> k;
+    ll ans = 0;
+    rep(b, k+1, n+1){
+        ans += (n/b)*(b-k) + max(0LL, n%b-k+1);
     }
-    cout << ans << endl;
+
+    cout << (k == 0 ? n*n : ans) << endl;
 }

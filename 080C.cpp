@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,20 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
     ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
-            }
-        }
-        ans = min(ans, cal(ok, a));
+    vvll f(n, vll(10));
+    rep(n) rep(j,10) cin >> f[i][j];
+    vvll p(n, vll(11));
+    rep(n) rep(j,11) cin >> p[i][j];
+
+    ll ans = -1e18;
+    rep(i,1,1<<10){
+        vll cnt(n);
+        rep(j,10) if(i>>j&1) rep(k,n) if(f[k][j]) cnt[k]++;
+        ll sum = 0;
+        rep(j,n) sum += p[j][cnt[j]];
+        ans = max(ans, sum);
     }
     cout << ans << endl;
 }

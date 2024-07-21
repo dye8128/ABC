@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,41 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
-    ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
+    ll H, W, n, h, w; cin >> H >> W >> n >> h >> w;
+    vvll a(H, vll(W));
+    rep(H) rep(j, W) cin >> a[i][j];
+    vll cnt(n + 1); ll ans = 0;
+    rep(H) rep(j, W) {
+        if(cnt[a[i][j]] == 0) ans++;
+        cnt[a[i][j]]++;
+    }
+    rep(h) rep(j, w) {
+        cnt[a[i][j]]--;
+        if(cnt[a[i][j]] == 0) ans--;
+    }
+    rep(H-h+1){
+        ll ans2 = ans;
+        auto cnt2 = cnt;
+        rep(j, W-w){
+            cout << ans << " ";
+            // each(i, cnt) cout << i << " "; cout << endl;
+            rep(k, h){
+                cnt[a[i+k][j]]++;
+                if(cnt[a[i+k][j]] == 1) ans++;
+                cnt[a[i+k][j+w]]--;
+                if(cnt[a[i+k][j+w]] == 0) ans--;
             }
         }
-        ans = min(ans, cal(ok, a));
+        cout << ans <<  endl;
+        if(i == H-h) break;
+        ans = ans2;
+        cnt = cnt2;
+        rep(j, w){
+            cnt[a[i][j]]++;
+            if(cnt[a[i][j]] == 1) ans++;
+            cnt[a[i+h][j]]--;
+            if(cnt[a[i+h][j]] == 0) ans--;
+        }
     }
-    cout << ans << endl;
 }

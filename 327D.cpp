@@ -26,55 +26,40 @@ using vvll = vvc<ll>;
 #define each3(x,y,a)   for(auto&& [x, y] : a)
 #define each4(x,y,z,a) for(auto&& [x, y, z] : a)
 #define each(...) overload4(__VA_ARGS__, each4, each3, each2, each1)(__VA_ARGS__)
+#define all(x) (x).begin(), (x).end()
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    vint x(2e5+1, -1);
-    int n, m; cin >> n >> m;
-    vint a(m);
-    for(int i = 0; i < m; i++){
-        cin >> a.at(i);
+    ll n, m; cin >> n >> m;
+    vll a(m); rep(m) cin >> a[i];
+    vll b(m); rep(m) cin >> b[i];
+    vvll g(n);
+    rep(m) {
+        g[a[i] - 1].push_back(b[i] - 1);
+        g[b[i] - 1].push_back(a[i] - 1);
     }
-    vint b(m);
-    for(int i = 0; i < m; i++){
-        cin >> b.at(i);
-    }
-    x[b[0]] = 0;
-    bool flag = true;
-    ll i = 0;
-    while(i <= a.size()){
-        if(x[b[i]] == x[a[i]] && x[b[i]] != -1){
-            flag = false;
-        }
-        if(x[b[i]] == -1){
-            if(x[a[i]] == 0){
-                x[b[i]] = 1;
-            }else if(x[a[i]] == 1){
-                x[b[i]] = 0;
-            }else if(x[a[i]] == -1){
-                a.emplace_back(a[i]);
-                b.emplace_back(b[i]);
-                continue;
+    queue<ll> q;
+    vll dist(n, -1);
+    ll s = 0;
+    while(s < n){
+        q.push(s);
+        dist[s] = 0;
+        while(!q.empty()){
+            ll v = q.front(); q.pop();
+            each(i, g[v]){
+                if(dist[i] == -1){
+                    dist[i] = dist[v] + 1;
+                    q.push(i);
+                }else{
+                    if((dist[v] - dist[i])%2==0) {
+                        cout << "No" << endl;
+                        return 0;
+                    }
+                }
             }
-        }else if(x[b[i]] == 1){
-            x[a[i]] = 0;
-        }else if(x[b[i]] == 0){
-            x[a[i]] = 1;
         }
-        if(x[a[i]] == -1){
-            if(x[b[i]] == 0){
-                x[a[i]] = 1;
-            }else{
-                x[a[i]] = 0;
-            }
-        }else if(x[a[i]] == 1){
-            x[b[i]] = 0;
-        }else if(x[a[i]] == 0){
-            x[b[i]] = 1;
-        }
-        i++;
+        while(s < n && dist[s] != -1) s++;
     }
-    yesno(flag);
-    cout << a.size() << endl;
+    cout << "Yes" << endl;
 }

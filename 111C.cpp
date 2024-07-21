@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,41 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
     ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
-            }
-        }
-        ans = min(ans, cal(ok, a));
+    vll v(n); rep(n) cin >> v[i];
+    map<ll,ll> mp0, mp1;
+    rep(i,n){
+        if(i%2) mp1[v[i]]++;
+        else mp0[v[i]]++;
     }
+    ll max0 = 0, max1 = 0;
+    ll max0key = 0, max1key = 0;
+    each(x, mp0){
+        if(x.second > max0){
+            max0 = x.second;
+            max0key = x.first;
+        }
+    }
+    each(x, mp1){
+        if(x.second > max1 && x.first != max0key){
+            max1 = x.second;
+        }
+    }
+    ll ans = n - max0 - max1;
+    max1 = 0; max0 = 0;
+    each(x, mp1){
+        if(x.second > max1){
+            max1 = x.second;
+            max1key = x.first;
+        }
+    }
+    each(x, mp0){
+        if(x.second > max0 && x.first != max1key){
+            max0 = x.second;
+        }
+    }
+    ans = min(ans, n - max0 - max1);
+    
     cout << ans << endl;
 }

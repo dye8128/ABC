@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,29 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
     ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
-            }
-        }
-        ans = min(ans, cal(ok, a));
+    vll a(n); rep(n) cin >> a[i];
+    vstr s(n); rep(n) cin >> s[i];
+    vvll dist(n, vll(n, 1e18));
+    vvll val(n, vll(n, 0));
+    rep(n) dist[i][i] = 0;
+    rep(n) rep(j, n){
+        if(s[i][j] == 'Y') {dist[i][j] = 1; val[i][j] = a[j];}
     }
-    cout << ans << endl;
+    rep(n) rep(j, n) rep(k, n){
+        if(dist[j][k] > dist[j][i] + dist[i][k]){
+            dist[j][k] = dist[j][i] + dist[i][k];
+            val[j][k] = val[j][i] + val[i][k];
+        }else if(dist[j][k] == dist[j][i] + dist[i][k]){
+            val[j][k] = max(val[j][k], val[j][i] + val[i][k]);
+        }
+    }
+    ll q; cin >> q;
+    rep(q){
+        ll x, y; cin >> x >> y;
+        --x, --y;
+        if(dist[x][y] == 1e18) cout << "Impossible" << endl;
+        else cout << dist[x][y] << " "<< val[x][y] + a[x] << endl;
+    }
 }

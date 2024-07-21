@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,29 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
-    ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
-            }
+    ll n, k; cin >> n >> k;
+    str s; cin >> s;
+    vll a;
+    if(s[0] == '0') a.emplace_back(0);
+    ll cnt = 1;
+    rep(i,1,n){
+        if(s[i] == s[i-1]) cnt++;
+        else{
+            a.emplace_back(cnt);
+            cnt = 1;
         }
-        ans = min(ans, cal(ok, a));
+    }
+    a.emplace_back(cnt);
+    if(s.back() == '0') a.emplace_back(0);
+    // each(aa,a) cout << aa << " "; cout << endl;
+    ll m = a.size();
+    vll sum(m+1);
+    rep(i,m) sum[i+1] = sum[i] + a[i];
+    ll ans = 0;
+    rep(i,0,m,2){
+        ll l = i, r = min(i+2*k+1,m);
+        ans = max(ans, sum[r] - sum[l]);
     }
     cout << ans << endl;
 }

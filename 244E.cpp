@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +31,30 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
+using mint = atcoder::modint998244353;
 
 int main() {
-    ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
+    ll n, m, k, s, t, x; cin >> n >> m >> k >> s >> t >> x;
+    vvll g(n+1);
+    rep(m) {
+        ll a, b; cin >> a >> b;
+        g[a].push_back(b);
+        g[b].push_back(a);
+    }
+    vc<vvc<mint>> dp(n+1, vvc<mint>(k+1, vc<mint>(2)));
+    dp[s][0][0] = 1;
+    rep(i, k){
+        rep(j, 1, n+1){
+            each(v, g[j]){
+                if(v == x){
+                    dp[v][i+1][1] += dp[j][i][0];
+                    dp[v][i+1][0] += dp[j][i][1];
+                }else{
+                    dp[v][i+1][0] += dp[j][i][0];
+                    dp[v][i+1][1] += dp[j][i][1];
+                }
             }
         }
-        ans = min(ans, cal(ok, a));
     }
-    cout << ans << endl;
+    cout << dp[t][k][0].val() << endl;
 }

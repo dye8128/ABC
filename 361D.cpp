@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,35 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
     ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
+    str s, t; cin >> s >> t;
+    ll ans = 0;
+    map<str, ll> mp;
+    mp.insert({s+"..",0});
+    queue<str> q; q.push(s+"..");
+    while(!q.empty()){
+        str u = q.front(); q.pop();
+        if(u == t+".."){
+            cout << mp[u] << endl;
+            return 0;
+        }
+        ll c;
+        rep(i,n+2){
+            if(u[i] == '.'){
+                c = i;
+                break;
             }
         }
-        ans = min(ans, cal(ok, a));
+        rep(i,n+1){
+            if(i == c || i == c+1 || i == c-1) continue;
+            str v = u;
+            swap(v[c],v[i]); swap(v[c+1],v[i+1]);
+            if(mp.count(v) == 0){
+                mp.insert({v,mp[u]+1});
+                q.push(v);
+            }
+        }
     }
-    cout << ans << endl;
+    cout << -1 << endl;
 }

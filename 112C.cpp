@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,27 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
     ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
+    struct info {
+        ll x, y, h;
+    };
+    vc<info> v(n);
+    rep(n) cin >> v[i].x >> v[i].y >> v[i].h;
+    sort(all(v), [](info a, info b){return a.h > b.h;});
+    rep(x,101) rep(y,101) {
+        ll h = v[0].h + abs(v[0].x - x) + abs(v[0].y - y);
+        rep(i,1,n) {
+            if (v[i].h == 0) {
+                if (h > abs(v[i].x - x) + abs(v[i].y - y)) {h = -1; break;}
+            } else {
+                if (h != v[i].h + abs(v[i].x - x) + abs(v[i].y - y)) {h = -1; break;}
             }
         }
-        ans = min(ans, cal(ok, a));
+        if(h > 0){
+            cout << x << " " << y << " " << h << endl;
+            return 0;
+        }
     }
-    cout << ans << endl;
+
 }

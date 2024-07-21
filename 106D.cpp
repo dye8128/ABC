@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,25 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
-    }
-    return ans;
-}
-
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
-
 int main() {
-    ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
-            }
-        }
-        ans = min(ans, cal(ok, a));
+    ll n, m, q; cin >> n >> m >> q;
+    vvll a(n, vll(n));
+    rep(m){
+        ll l, r; cin >> l >> r;
+        a[l-1][r-1]++;
     }
-    cout << ans << endl;
+    vvll s(n, vll(n));
+    s[0][0] = a[0][0];
+    rep(i,1,n) s[0][i] = s[0][i-1] + a[0][i];
+    rep(i,1,n) s[i][0] = s[i-1][0] + a[i][0];
+    rep(i,1,n){
+        rep(j,1,n){
+            s[i][j] = s[i-1][j] + s[i][j-1] - s[i-1][j-1] + a[i][j];
+        }
+    }
+    rep(q){
+        ll p, q; cin >> p >> q;
+        p--; q--;
+        cout << s[q][q] + (p==0 ? 0 : (- s[p-1][q] - s[q][p-1] + s[p-1][p-1])) << endl;
+    }
 }

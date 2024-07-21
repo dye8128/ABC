@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -30,38 +30,32 @@ using vvll = vvc<ll>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-ll pow(ll a, ll b){
-    ll ans = 1;
-    rep(b){
-        ans *= a;
+vll a,b,c,d;
+ll ans = 0, m;
+
+void calc(ll n, vll &v){
+    if(n + 1 == v.size()){
+        ll sum = 0;
+        // each(i,v) cout << i << " "; cout << endl;
+        rep(i,d.size()){
+            if(v[b[i]] - v[a[i]] == c[i]) sum += d[i];
+        }
+        ans = max(ans, sum);
+        return;
     }
-    return ans;
+    rep(i, v.back(), m+1){
+        v.emplace_back(i);
+        calc(n, v);
+        v.pop_back();
+    }
 }
 
-ll cal (ll a, ll b){
-    ll ans = 0;
-    rep(i,4){
-        ans += pow(a, i) * pow(b, 3-i);
-        if(ans >= 2e18) break;
-    }
-    return ans;
-}
 
 int main() {
-    ll n; cin >> n;
-    ll ans = 1ll << 60;
-    rep(i, 1e6){
-        ll a = i;
-        ll ok = 1e6, ng = -1;
-        while(ok - ng > 1){
-            ll mid = (ok + ng) / 2;
-            if(cal(mid, a) >= n){
-                ok = mid;
-            }else{
-                ng = mid;
-            }
-        }
-        ans = min(ans, cal(ok, a));
-    }
+    ll n, q; cin >> n >> m >> q;
+    a.assign(q,0); b.assign(q,0); c.assign(q,0); d.assign(q,0);
+    vll v = {1};
+    rep(q) {cin >> a[i] >> b[i] >> c[i] >> d[i];}
+    calc(n, v);
     cout << ans << endl;
 }
