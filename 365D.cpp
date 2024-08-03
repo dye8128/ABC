@@ -34,10 +34,31 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll y; cin >> y;
-    bool f = false;
-    if(y % 400 == 0) f = true;
-    else if(y % 100 == 0) f = false;
-    else if(y % 4 == 0) f = true;
-    cout << 365 + f << endl;
+    ll n; cin >> n;
+    str s; cin >> s;
+    vector dp(n+1, vll(3, 0));
+
+    // R, S, P
+    rep(i,n){
+        if(s[i] == 'R'){
+            dp[i+1][0] = max(dp[i][1], dp[i][2]);
+            dp[i+1][2] = max(dp[i][1], dp[i][0])+1;
+        }
+        if(s[i] == 'S'){
+            dp[i+1][1] = max(dp[i][2], dp[i][0]);
+            dp[i+1][0] = max(dp[i][2], dp[i][1])+1;
+        }
+        if(s[i] == 'P'){
+            dp[i+1][2] = max(dp[i][0], dp[i][1]);
+            dp[i+1][1] = max(dp[i][0], dp[i][2])+1;
+        }
+    }
+    // cout << "R S P" << endl;
+    // rep(i,1,n+1){
+    //     rep(j,3){
+    //         cout << dp[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+    cout << max({dp[n][0], dp[n][1], dp[n][2]}) << endl;
 }

@@ -15,7 +15,6 @@ using vbool = vc<bool>;
 using vvint = vvc<int>;
 using vvll = vvc<ll>;
 using vvvll = vvc<vll>;
-using vvpll = vvc<pll>;
 using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 #define overload4(_1, _2, _3, _4, name, ...) name
@@ -34,10 +33,26 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll y; cin >> y;
-    bool f = false;
-    if(y % 400 == 0) f = true;
-    else if(y % 100 == 0) f = false;
-    else if(y % 4 == 0) f = true;
-    cout << 365 + f << endl;
+    ll n, x, y; cin >> n >> x >> y;
+    vll a(n), b(n); rep(n) cin >> a[i] >> b[i];
+    vc<vvll> dp(n+1, vvll(n+1, vll(x+1, 1e9)));
+    dp[0][0][0] = 0;
+    rep(i, n){
+        rep(j, n){
+            rep(k, x+1){
+                dp[i+1][j][k] = min(dp[i+1][j][k], dp[i][j][k]);
+                if(k+a[i] <= x) dp[i+1][j+1][k+a[i]] = min(dp[i+1][j+1][k+a[i]], dp[i][j][k]+b[i]);
+            }
+        }
+    }
+    rep(n+1){
+        rep(j, x+1){
+            // cout << dp[n][i][j] << " ";
+            if(dp[n][n-i][j] <= y){
+                cout << min(n,n-i+1) << endl;
+                return 0;
+            }
+        }
+        // cout << endl;
+    }
 }

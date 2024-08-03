@@ -14,8 +14,6 @@ using vpll = vc<pll>;
 using vbool = vc<bool>;
 using vvint = vvc<int>;
 using vvll = vvc<ll>;
-using vvvll = vvc<vll>;
-using vvpll = vvc<pll>;
 using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 #define overload4(_1, _2, _3, _4, name, ...) name
@@ -33,11 +31,32 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+ll powl(ll a, ll b){
+    ll res = 1;
+    rep(b) res *= a;
+    return res;
+}
+
 int main() {
-    ll y; cin >> y;
-    bool f = false;
-    if(y % 400 == 0) f = true;
-    else if(y % 100 == 0) f = false;
-    else if(y % 4 == 0) f = true;
-    cout << 365 + f << endl;
+    ll n; cin >> n;
+    vll border(36);
+    border[0] = 10; border[1] = 9;
+    rep(i, 2, 36) border[i] = 9 * powl(10, i/2);
+    rep(i, 1, 36) border[i] += border[i-1];
+    // each(border) cout << i << endl;
+    ll i = 0;
+    if(n <= 10){
+        cout << n-1 << endl;
+        return 0;
+    }
+    while(n > border[i]) i++;
+    n -= border[i-1];
+    // cout << i << " " << n << endl;
+    n += powl(10, i/2)-1;
+    // cout << n << endl;
+    str s = to_string(n);
+    str t = s;
+    reverse(all(t));
+    if(i % 2 == 0) s.pop_back();
+    cout << s + t << endl;
 }

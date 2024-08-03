@@ -14,8 +14,6 @@ using vpll = vc<pll>;
 using vbool = vc<bool>;
 using vvint = vvc<int>;
 using vvll = vvc<ll>;
-using vvvll = vvc<vll>;
-using vvpll = vvc<pll>;
 using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 #define overload4(_1, _2, _3, _4, name, ...) name
@@ -34,10 +32,29 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll y; cin >> y;
-    bool f = false;
-    if(y % 400 == 0) f = true;
-    else if(y % 100 == 0) f = false;
-    else if(y % 4 == 0) f = true;
-    cout << 365 + f << endl;
+    ll h, w; cin >> h >> w;
+    ll si, sj; cin >> si >> sj; si--; sj--;
+    vstr c(h); each(i, c) cin >> i;
+    str x; cin >> x;
+    rep(x.size()){
+        if(x[i] == 'L'){
+            if(sj == 0) continue;
+            if(c[si][sj-1] == '#') continue;
+            sj--;
+        }else if(x[i] == 'R'){
+            if(sj == w-1) continue;
+            if(c[si][sj+1] == '#') continue;
+            sj++;
+        }else if(x[i] == 'U'){
+            if(si == 0) continue;
+            if(c[si-1][sj] == '#') continue;
+            si--;
+        }else if(x[i] == 'D'){
+            if(si == h-1) continue;
+            if(c[si+1][sj] == '#') continue;
+            si++;
+        }
+        // cout << si << " " << sj << endl;
+    }
+    cout << ++si << " " << ++sj << endl;
 }

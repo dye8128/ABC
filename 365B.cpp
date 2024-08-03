@@ -34,10 +34,9 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll y; cin >> y;
-    bool f = false;
-    if(y % 400 == 0) f = true;
-    else if(y % 100 == 0) f = false;
-    else if(y % 4 == 0) f = true;
-    cout << 365 + f << endl;
+    ll n; cin >> n;
+    vll a(n); each(i, a) cin >> i;
+    vll ind(n); rep(n) ind[i] = i;
+    sort(all(ind), [&](ll i, ll j){return a[i] < a[j];});
+    cout << ind[n-2]+1 << endl;
 }

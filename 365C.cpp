@@ -34,10 +34,20 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll y; cin >> y;
-    bool f = false;
-    if(y % 400 == 0) f = true;
-    else if(y % 100 == 0) f = false;
-    else if(y % 4 == 0) f = true;
-    cout << 365 + f << endl;
+    ll n, m; cin >> n >> m;
+    vll a(n); each(i, a) cin >> i;
+    ll ok = 0, ng = 1e15;
+    while(abs(ok - ng) > 1){
+        ll mid = (ok + ng) / 2;
+        ll tmp = 0;
+        rep(n){
+            tmp += min(a[i], mid);
+        }
+        tmp <= m ? ok = mid : ng = mid;
+    }
+    if(ok > 1e14){
+        cout << "infinite" << endl;
+    }else{
+        cout << ok << endl;
+    }
 }

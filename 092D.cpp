@@ -14,8 +14,6 @@ using vpll = vc<pll>;
 using vbool = vc<bool>;
 using vvint = vvc<int>;
 using vvll = vvc<ll>;
-using vvvll = vvc<vll>;
-using vvpll = vvc<pll>;
 using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 #define overload4(_1, _2, _3, _4, name, ...) name
@@ -34,10 +32,19 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll y; cin >> y;
-    bool f = false;
-    if(y % 400 == 0) f = true;
-    else if(y % 100 == 0) f = false;
-    else if(y % 4 == 0) f = true;
-    cout << 365 + f << endl;
+    ll a, b; cin >> a >> b;
+    cout << 100 << " " << 100 << endl;
+    vstr s(100);
+    rep(50) s[i] = string(100, '#');
+    rep(50) s[i+50] = string(100, '.');
+    a--; b--;
+    while(a > 0){
+        s[(a/50)*2][(a%50)*2] = '.';
+        a--;
+    }
+    while(b > 0){
+        s[(b/50)*2+51][(b%50)*2] = '#';
+        b--;
+    }
+    each(i, s) cout << i << endl;
 }
