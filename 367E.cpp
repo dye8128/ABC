@@ -33,16 +33,35 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+int log2LL (ll n) {
+    int x = 0;
+    while (n >>= 1) x++;
+    return x;
+} 
+
 int main() {
-    str x; cin >> x;
-    ll n = x.size();
-    ll i = 0;
-    while(x[i] != '.') cout << x[i++];
-    ll z = 0;
-    rep(i,3) {if(x[n-1-i] == '0') z++; else break;}
-    if(z == 3) cout << endl;
-    else{
-        rep(i,4-z) cout << x[n-4+i];
-        cout << endl;
+    ll n, k; cin >> n >> k;
+    vint x(n); rep(n) {cin >> x[i]; x[i]--;}
+    vint a(n); rep(n) cin >> a[i];
+    vvint dp(n, vint(log2LL(k)+1, 0));
+    // cout << log2LL(k) << endl;
+    rep(n) dp[i][0] = x[i];
+    rep(i, 1, log2LL(k)+1){
+        rep(j,n){
+            dp[j][i] = dp[dp[j][i-1]][i-1];
+        }
     }
+    // rep(n) cout << dp[i][1] << " "; cout << endl;
+    rep(n){
+        int ans = i;
+        ll ki = k;
+        int ind = 0;
+        while(ki > 0){
+            if(ki & 1) ans = dp[ans][ind];
+            ind++;
+            ki >>= 1;
+        }
+        cout << a[ans] << " ";
+    }
+    cout << endl;
 }

@@ -34,15 +34,20 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    str x; cin >> x;
-    ll n = x.size();
-    ll i = 0;
-    while(x[i] != '.') cout << x[i++];
-    ll z = 0;
-    rep(i,3) {if(x[n-1-i] == '0') z++; else break;}
-    if(z == 3) cout << endl;
-    else{
-        rep(i,4-z) cout << x[n-4+i];
-        cout << endl;
+    ll n, m; cin >> n >> m;
+    vll a(n); each(a) cin >> i;
+    vll sum(n+1);
+    rep(n) sum[i+1] = sum[i] + a[i];
+    vvll mod(m);
+    rep(n) mod[sum[i] % m].emplace_back(i);
+    ll ans = 0;
+    ll f = sum[n] % m;
+    rep(n){
+        ll k = sum[i] % m;
+        ll l = lower_bound(all(mod[k]), i) - mod[k].begin();
+        ans += l;
+        ll r = upper_bound(all(mod[(k+f)%m]), i) - mod[(k+f)%m].begin();
+        ans += max(0ull,mod[(k+f)%m].size()-r);
     }
+    cout << ans << endl;
 }

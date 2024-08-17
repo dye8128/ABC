@@ -34,15 +34,10 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    str x; cin >> x;
-    ll n = x.size();
-    ll i = 0;
-    while(x[i] != '.') cout << x[i++];
-    ll z = 0;
-    rep(i,3) {if(x[n-1-i] == '0') z++; else break;}
-    if(z == 3) cout << endl;
-    else{
-        rep(i,4-z) cout << x[n-4+i];
-        cout << endl;
+    ll a,b,c; cin >> a >> b >> c;
+    if(c-b<0){
+        c+=24; a+=24;
     }
+    if(b<a && a<c) cout << "No" << endl;
+    else cout << "Yes" << endl;
 }
