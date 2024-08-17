@@ -34,10 +34,30 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n, t, a; cin >> n >> t >> a;
-    if(t >= (n+1)/2 || a >= (n+1)/2){
-        cout << "Yes" << endl;
-        return 0;
+    ll n, d; cin >> n >> d;
+    vll x(n), y(n);
+    rep(n) {cin >> x[i] >> y[i]; x[i] += 2e6; y[i] += 2e6;}
+    sort(all(x)); sort(all(y));
+    vll sumx(n+1, 0), sumy(n+1, 0);
+    rep(n) sumx[i+1] = sumx[i] + x[i];
+    rep(n) sumy[i+1] = sumy[i] + y[i];
+    vll dx(4e6+1, 0), dy(4e6+1, 0);
+    ll idx = 0;
+    rep(i, 4e6+1){
+        while(x[idx] < i && idx < n) idx++;
+        dx[i] = sumx[n] - 2*sumx[idx] + (2*idx-n)*i;
     }
-    cout << "No" << endl;
+    idx = 0;
+    rep(i, 4e6+1){
+        while(y[idx] < i && idx < n) idx++;
+        dy[i] = sumy[n] - 2*sumy[idx] + (2*idx-n)*i;
+    }
+    ll ans = 0;
+    sort(all(dx)); sort(all(dy));
+    idx = 4e6;
+    rep(i, 4e6+1){
+        while(idx >= 0 && dx[i] + dy[idx] > d) idx--;
+        ans += idx+1;
+    }
+    cout << ans << endl;
 }

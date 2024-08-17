@@ -34,10 +34,23 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n, t, a; cin >> n >> t >> a;
-    if(t >= (n+1)/2 || a >= (n+1)/2){
-        cout << "Yes" << endl;
-        return 0;
+    ll n; cin >> n;
+    vstr s(n); rep(n) cin >> s[i];
+    ll m=0;
+    rep(n) m = max(m, (ll)s[i].size());
+    rep(n){
+        ll size = s[i].size();
+        rep(j, m-size) s[i]+= '*';
     }
-    cout << "No" << endl;
+    rep(m){
+        rep(j, n){
+            rep(k,j,n){
+                if(s[n-1-k][i] != '*') break;
+                if(k == n-1) goto END;
+            }
+            cout << s[n-1-j][i];
+        }
+        END:
+        cout << endl;
+    }
 }

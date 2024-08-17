@@ -34,10 +34,17 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n, t, a; cin >> n >> t >> a;
-    if(t >= (n+1)/2 || a >= (n+1)/2){
-        cout << "Yes" << endl;
-        return 0;
+    ll n; cin >> n;
+    vvvll a(n, vvll(n, vll(n)));
+    rep(i,n) rep(j,n) rep(k,n) cin >> a[i][j][k];
+    vvvll sum(n+1, vvll(n+1, vll(n+1, 0)));
+    rep(i,n) rep(j,n) rep(k,n) 
+    sum[i+1][j+1][k+1] = sum[i+1][j+1][k] + sum[i+1][j][k+1] + sum[i][j+1][k+1] - sum[i][j][k+1] - sum[i][j+1][k] - sum[i+1][j][k] + sum[i][j][k] + a[i][j][k];
+    ll q; cin >> q;
+    // rep(i,n+1) {rep(j,n+1) {rep(k,n+1) cout << sum[i][j][k] << " "; cout << endl;} cout << endl;}
+    rep(q){
+        ll lx, rx, ly, ry, lz, rz; cin >> lx >> rx >> ly >> ry >> lz >> rz;
+        lx--; ly--; lz--;
+        cout << sum[rx][ry][rz] - sum[lx][ry][rz] - sum[rx][ly][rz] - sum[rx][ry][lz] + sum[lx][ly][rz] + sum[lx][ry][lz] + sum[rx][ly][lz] - sum[lx][ly][lz] << endl;
     }
-    cout << "No" << endl;
 }
