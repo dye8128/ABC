@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -33,15 +34,34 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+using namespace atcoder;
+using mint = modint998244353;
+
 int main() {
-    ll a, b; cin >> a >> b;
-    ll ans = 0;
-    
-    rep(i,-100,201){
-        vll v(3); v[0] = a; v[1] = b;
-        v[2] = i;
-        sort(all(v));
-        if(v[2] - v[1] == v[1] - v[0]) ans++;
+    ll n; cin >> n;
+    vll a(n); rep(n) cin >> a[i];
+    vll b(n); rep(n) cin >> b[i];
+    vector dp(n+1, vc<mint>(5001));
+    mint ans = 0;
+    vll ind(n);
+    iota(all(ind), 0);
+    sort(all(ind), [&](int i, int j){return a[i] < a[j];});
+    vll b1(n);
+    rep(n) b1[i] = b[ind[i]]; b = b1;
+    sort(all(a));
+
+    dp[0][b[0]] = 1; ans += (a[0] >= b[0]);
+    rep(i, 1, n){
+        dp[i][b[i]] = 1;
+        rep(j, 5001-b[i]){
+            dp[i][j+b[i]] += dp[i-1][j];
+        }
+        rep(j, a[i]+1){
+            ans += dp[i][j];
+        }
+        rep(j, 5001){
+            dp[i][j] += dp[i-1][j];
+        }
     }
-    cout << ans << endl;
+    cout << ans.val() << endl;
 }

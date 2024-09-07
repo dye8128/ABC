@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -33,15 +34,36 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+using namespace atcoder;
+
 int main() {
-    ll a, b; cin >> a >> b;
-    ll ans = 0;
-    
-    rep(i,-100,201){
-        vll v(3); v[0] = a; v[1] = b;
-        v[2] = i;
-        sort(all(v));
-        if(v[2] - v[1] == v[1] - v[0]) ans++;
+    ll n,m; cin >> n >> m;
+    ll e; cin >> e;
+    struct UV{
+        ll u, v;
+    };
+    vc<UV> uv(e); rep(e) cin >> uv[i].u >> uv[i].v;
+    ll q; cin >> q;
+    vll x(q); rep(q) {cin >> x[i]; x[i]--;}
+    vll ans(q);
+    dsu s(n+m+1);
+    rep(m){
+        s.merge(n+i+1, 0);
     }
-    cout << ans << endl;
+    vll sortedX = x;
+    sort(all(sortedX));
+    ll j = 0;
+    rep(i,e){
+        if(j < q && sortedX[j] == i){
+            j++;
+        }else{
+            s.merge(uv[i].u, uv[i].v);
+        }
+    }
+    rep(i,q){
+        ans[i] = s.size(0) - 1;
+        s.merge(uv[x[q-i-1]].u, uv[x[q-i-1]].v);
+    }
+    reverse(all(ans));
+    each(v, ans) cout << v - m << endl;
 }

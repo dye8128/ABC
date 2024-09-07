@@ -34,14 +34,55 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll a, b; cin >> a >> b;
-    ll ans = 0;
-    
-    rep(i,-100,201){
-        vll v(3); v[0] = a; v[1] = b;
-        v[2] = i;
-        sort(all(v));
-        if(v[2] - v[1] == v[1] - v[0]) ans++;
+    ll h, w, n; cin >> h >> w >> n;
+    vpll coins(n); rep(n) cin >> coins[i].first >> coins[i].second;
+    sort(all(coins));
+    vll idx;
+    vll dp(n+1, 1e9);
+    rep(n){
+        auto it = upper_bound(all(dp), coins[i].second);
+        idx.push_back(it - dp.begin());
+        *it = coins[i].second;
     }
-    cout << ans << endl;
+    // each(idx) cout << i << " "; cout << endl;
+    vll lis;
+    ll i = 0;
+    ll m = 0;
+    while(dp[i] != 1e9){
+        m++;
+        i++;
+    }
+    m--;
+    i = n - 1;
+    while(m >= 0){
+        if(idx[i] == m){
+            lis.push_back(i);
+            m--;
+        }
+        i--;
+    }
+    reverse(all(lis));
+    m = lis.size();
+    // rep(m){
+    //     cout << coins[lis[i]].first << " " << coins[lis[i]].second << endl;
+    // }
+    ll x = 1, y = 1;
+    cout << m << endl;
+    rep(i,m){
+        rep(j, coins[lis[i]].first - x){
+            cout << "D";
+        }
+        rep(j, coins[lis[i]].second - y){
+            cout << "R";
+        }
+        x = coins[lis[i]].first;
+        y = coins[lis[i]].second;
+    }
+    rep(h - x){
+        cout << "D";
+    }
+    rep(w - y){
+        cout << "R";
+    }
+    cout << endl;
 }
