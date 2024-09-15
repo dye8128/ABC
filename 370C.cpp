@@ -34,12 +34,21 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    vll a(n);
-    str s = "SICUE";
-    iota(all(a), 0);
-    do{
-        each(a) cout << s[i];
-        cout << endl;
-    }while(next_permutation(all(a)));
+    str s,t; cin >> s >> t;
+    ll n = s.size();
+    vstr x;
+    rep(i,n){
+        if(s[i] == t[i]) continue;
+        if(s[i] > t[i]){
+            s[i] = t[i];
+            x.emplace_back(s);
+        }
+    }
+    rep(i,n){
+        if(s[n-1-i] == t[n-1-i]) continue;
+        s[n-1-i] = t[n-1-i];
+        x.emplace_back(s);
+    }
+    cout << x.size() << endl;
+    each(i,x) cout << i << endl;
 }

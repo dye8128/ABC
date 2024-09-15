@@ -34,12 +34,12 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
-    ll n; cin >> n;
-    vll a(n);
-    str s = "SICUE";
-    iota(all(a), 0);
-    do{
-        each(a) cout << s[i];
-        cout << endl;
-    }while(next_permutation(all(a)));
+    ll l,r; cin >> l >> r;
+    if(l == 1 && r == 0){
+        cout << "Yes" << endl;
+    }else if(r == 1 && l == 0){
+        cout << "No" << endl;
+    }else{
+        cout << "Invalid" << endl;
+    }
 }

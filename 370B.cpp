@@ -35,11 +35,15 @@ void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
 int main() {
     ll n; cin >> n;
-    vll a(n);
-    str s = "SICUE";
-    iota(all(a), 0);
-    do{
-        each(a) cout << s[i];
-        cout << endl;
-    }while(next_permutation(all(a)));
+    vvll a(n+1, vll(n+1));
+    rep(i,n)rep(j,i+1){
+        cin >> a[i+1][j+1];
+    }
+    ll ans = 1;
+    rep(i,1,n+1){
+        if(ans >= i) ans = a[ans][i];
+        else ans = a[i][ans];
+        // cout << ans << endl;
+    }
+    cout << ans << endl;
 }

@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
 using namespace std;
 using ll = long long;
 using str = string;
@@ -33,13 +34,22 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
+using mint = atcoder::modint998244353;
+
 int main() {
-    ll n; cin >> n;
-    vll a(n);
-    str s = "SICUE";
-    iota(all(a), 0);
-    do{
-        each(a) cout << s[i];
-        cout << endl;
-    }while(next_permutation(all(a)));
+    ll n, k; cin >> n >> k;
+    vll a(n); rep(n) cin >> a[i];
+    mint all = 1;
+    vc<mint> dp(n+1);
+    dp[0] = 1;
+    vll sum(n+1);
+    rep(i,n) sum[i+1] = sum[i] + a[i];
+    map<ll, mint> mp;
+    mp[k] = 1;
+    rep(i,1,n+1){
+        dp[i] = all - mp[sum[i]];
+        mp[k+sum[i]] += dp[i];
+        all += dp[i];
+    }
+    cout << dp[n].val() << endl;
 }
