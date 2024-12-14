@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -33,42 +33,17 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-bool is_in(ll x, ll y, ll h, ll w){
-    return 0 <= x && x < h && 0 <= y && y < w;
-}
-
 int main() {
-    ll h, w, xx; cin >> h >> w >> xx;
-    ll p, q; cin >> p >> q;
-    p--;q--;
-    vvll s(h, vll(w));
-    rep(h)rep(j, w) cin >> s[i][j];
-    struct Node{
-        ll s, x, y;
-    };
-    struct greater{
-        bool operator()(const Node& a, const Node& b){
-            return a.s > b.s;
+    ll n; cin >> n;
+    ll r; cin >> r;
+    vll d(n), a(n); rep(n) cin >> d[i] >> a[i];
+    rep(n){
+        if(d[i] == 1 && r >= 1600 && r < 2800){
+            r += a[i];
         }
-    };
-    priority_queue<Node, vc<Node>, greater> pque;
-    vint dx = {1, 0, -1, 0}, dy = {0, 1, 0, -1};
-    ll size = s[p][q];
-    vvll visited(h, vll(w));
-    visited[p][q] = 1;
-    pque.push({0, p, q});
-    while(!pque.empty()){
-        auto [enemy, p, q] = pque.top(); pque.pop();
-        // printf("enemy: %lld p: %lld q: %lld\n", enemy, p, q);
-        if(enemy * xx >= size) break;
-        size += enemy;
-        rep(4){
-            ll nx = p + dx[i], ny = q + dy[i];
-            if(is_in(nx, ny, h, w) && !visited[nx][ny]){
-                visited[nx][ny] = 1;
-                pque.push({s[nx][ny], nx, ny});
-            }
+        if(d[i] == 2 && r >= 1200 && r < 2400){
+            r += a[i];
         }
     }
-    cout << size << endl;
+    cout << r << endl;
 }

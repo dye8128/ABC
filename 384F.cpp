@@ -33,42 +33,41 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-bool is_in(ll x, ll y, ll h, ll w){
-    return 0 <= x && x < h && 0 <= y && y < w;
+ll cal(ll n){
+    ll cnt = 0;
+    while(n % 2 == 0){
+        n /= 2;
+        cnt++;
+    }
+    return cnt;
 }
 
 int main() {
-    ll h, w, xx; cin >> h >> w >> xx;
-    ll p, q; cin >> p >> q;
-    p--;q--;
-    vvll s(h, vll(w));
-    rep(h)rep(j, w) cin >> s[i][j];
-    struct Node{
-        ll s, x, y;
-    };
-    struct greater{
-        bool operator()(const Node& a, const Node& b){
-            return a.s > b.s;
+    ll n; cin >> n;
+    vll a(n); rep(n) cin >> a[i];   
+    vvll dp(30,{0,0});
+    ll ans = 0;
+    rep(n){
+        ll cnt = cal(a[i]);
+        dp[cnt][0] += a[i] >> cnt;
+        dp[cnt][1]++;
+        rep(j,cnt){
+            if(dp[j][1] > 0) {
+                ans += dp[j][0] + (a[i] >> j) * dp[j][1];
+                // printf("i: %lld, j: %lld, dp[j][0]: %lld, a[i] >> j: %lld\n", i, j, dp[j][0], a[i] >> j);
+            }
         }
-    };
-    priority_queue<Node, vc<Node>, greater> pque;
-    vint dx = {1, 0, -1, 0}, dy = {0, 1, 0, -1};
-    ll size = s[p][q];
-    vvll visited(h, vll(w));
-    visited[p][q] = 1;
-    pque.push({0, p, q});
-    while(!pque.empty()){
-        auto [enemy, p, q] = pque.top(); pque.pop();
-        // printf("enemy: %lld p: %lld q: %lld\n", enemy, p, q);
-        if(enemy * xx >= size) break;
-        size += enemy;
-        rep(4){
-            ll nx = p + dx[i], ny = q + dy[i];
-            if(is_in(nx, ny, h, w) && !visited[nx][ny]){
-                visited[nx][ny] = 1;
-                pque.push({s[nx][ny], nx, ny});
+        if(dp[cnt][1] > 0){
+            ans += (dp[cnt][0] + (a[i] >> cnt) * dp[cnt][1]) / 2;
+            // printf("i: %lld, cnt: %lld, dp[cnt][0]: %lld, a[i] >> cnt: %lld, dp[cnt][1]: %lld\n", i, cnt, dp[cnt][0], a[i] >> cnt, dp[cnt][1]);
+        }
+        rep(j,cnt+1,30){
+            if(dp[j][1] > 0) {
+                ans += (dp[j][0] << (j-cnt)) + (a[i] >> cnt) * dp[j][1];
+                // printf("i: %lld, j: %lld, a[i] >> cnt: %lld, dp[j][0] << (j-cnt): %lld\n", i, j, a[i] >> cnt, dp[j][0] << (j-cnt));
             }
         }
     }
-    cout << size << endl;
+    // rep(30) cout << dp[i][0] << " " << dp[i][1] << endl;
+    cout << ans << endl;
 }

@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -33,42 +33,28 @@ using pqueue = priority_queue<ll, vll, greater<ll>>;
 
 void yesno(bool flag){cout << (flag ? "Yes" : "No") << endl;}
 
-bool is_in(ll x, ll y, ll h, ll w){
-    return 0 <= x && x < h && 0 <= y && y < w;
-}
-
 int main() {
-    ll h, w, xx; cin >> h >> w >> xx;
-    ll p, q; cin >> p >> q;
-    p--;q--;
-    vvll s(h, vll(w));
-    rep(h)rep(j, w) cin >> s[i][j];
-    struct Node{
-        ll s, x, y;
-    };
-    struct greater{
-        bool operator()(const Node& a, const Node& b){
-            return a.s > b.s;
-        }
-    };
-    priority_queue<Node, vc<Node>, greater> pque;
-    vint dx = {1, 0, -1, 0}, dy = {0, 1, 0, -1};
-    ll size = s[p][q];
-    vvll visited(h, vll(w));
-    visited[p][q] = 1;
-    pque.push({0, p, q});
-    while(!pque.empty()){
-        auto [enemy, p, q] = pque.top(); pque.pop();
-        // printf("enemy: %lld p: %lld q: %lld\n", enemy, p, q);
-        if(enemy * xx >= size) break;
-        size += enemy;
-        rep(4){
-            ll nx = p + dx[i], ny = q + dy[i];
-            if(is_in(nx, ny, h, w) && !visited[nx][ny]){
-                visited[nx][ny] = 1;
-                pque.push({s[nx][ny], nx, ny});
+    vll a(5); rep(5) cin >> a[i];
+    vll ind(32);
+    iota(all(ind), 0);
+    vc<double> score(32);
+    rep(i,1,32){
+        double sum = 0;
+        rep(j,5){
+            if((i >> j) & 1){
+                sum += a[j] + pow(2,4-j) * 0.01;
             }
         }
+        score[i] = sum;
     }
-    cout << size << endl;
+    sort(all(ind), [&](double x, double y){return score[x] > score[y];});
+    rep(i,31){
+        rep(j,5){
+            if((ind[i] >> j) & 1){
+                cout << char('A' + j);
+            }
+        }
+        // printf(": %f", score[ind[i]]);
+        cout << endl;
+    }
 }

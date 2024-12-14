@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = unsigned long long;
+using ll = long long;
 using str = string;
 using pint = pair<int, int>;
 using pll = pair<ll, ll>;
@@ -38,7 +38,7 @@ bool is_in(ll x, ll y, ll h, ll w){
 }
 
 int main() {
-    ll h, w, xx; cin >> h >> w >> xx;
+    ll h, w, x; cin >> h >> w >> x;
     ll p, q; cin >> p >> q;
     p--;q--;
     vvll s(h, vll(w));
@@ -60,7 +60,7 @@ int main() {
     while(!pque.empty()){
         auto [enemy, p, q] = pque.top(); pque.pop();
         // printf("enemy: %lld p: %lld q: %lld\n", enemy, p, q);
-        if(enemy * xx >= size) break;
+        if(enemy >= (size + x - 1) / x) break;
         size += enemy;
         rep(4){
             ll nx = p + dx[i], ny = q + dy[i];
